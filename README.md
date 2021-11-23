@@ -1,6 +1,6 @@
 # View Component Design Pattern <!-- omit in toc -->
 
-A simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications or complex components that encapsulate UI states while keeping the pattern as simple as possible.
+A simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications or widgets with view components that encapsulate application state while keeping the pattern as simple as possible.
 
 ---
 
@@ -12,34 +12,54 @@ A simple design pattern for JavaScript frontend development. The goal of this de
 
 ## Table of Contents <a id="toc" name="toc"></a> <!-- omit in toc -->
 
-- [Components](#components)
 - [View Components](#view-components)
+- [API](#api)
 
-### Components
+## View Components
 
-#### UI state is composed of a series of components, with a single root component that parents a tree of child components.
+For this document, the term "component" refers to a view component.
 
-#### Each component may have its own state, controller code, and a view or is responsible for adding another component's view to the display.
+#### Application state represents the totality of the state for a group of components as a whole.
+
+The group of components could be an application or a complex aggregate component.
+
+#### Application state can be broken into smaller parts that are individually known as simply _state_. In this document, _state_ refers to a part of application state.
+
+#### Application state is presented via a group of components, with a single root component parenting a tree of child components.
+
+All components have a parent component, with the only exception being the root component.
+
+This tree of components is referred to as the "component tree".
+
+#### Each component may have its own internal state, controller code, and a view.
 
 Components are MVC components.
 
-#### A component can be a higher-order component tasked with returning another component.
+#### A component's view is its state representation, its reflection of state to the display.
 
-#### Parent components manage the UI state for child components. They pass the child component its state and they modify their child components' states.
+#### All components are required to have a view.
 
-This does not necessarily mean that the parent view wraps an HTML element that is the parent element for the child component's HTML. For example, assume a parent component parents another component whose view is a modal. The modal's wrapped HTML element is parented by `document.body`, not the parent component. Thus, the parent component view does not strictly parent the child component view. Rather, it parents the child's UI state and is responsible for passing the child its state.
+#### Parent components manage the state of child components. They pass the child component state and they modify their child components' state.
 
-#### Parent components add child components. Components do not add themselves.
+Components do not directly modify the state passed to them by a parent component. Components may manage their own internal state, but the state that is passed to them is managed by their parent.
+
+#### Parent components handle the process of adding child components to themselves. In other words, components do not add themselves to the component tree.
+
+This includes adding a component's view to the display. A parent component adds a child component's view to the display.
+
+This does not necessarily mean that the parent's HTML is the parent element for the child's HTML. For example, assume a child component has a modal view. The modal view is parented by `document.body`, not the parent's HTML. Thus, the parent's view does not strictly parent the child's view. Rather, the parent component is responsible for adding the child's view to the display.
+
+However, typically a parent component's HTML will be the parent element for child component HTML.
 
 #### Components do not need to know anything about their parent component.
 
-#### A component should only change the application state if it manages that part of the state.
+#### A component should only change state if it manages that part of the state.
 
 A particular state should be managed by the component that is (1) closest to where the state is _used_ and also (2) parents all the other components that use the state. This way, if the component managing state mutates said state, it can handle sending the updates to all of the children who depend on the state.
 
 Note that what matters is where the state is _used_. State may be stored higher up in the component tree, but it is where it is actually used that counts when determining what component can mutate the state. For example, data may be stored on the root component, but where it is used determines what component manages it and can mutate it.
 
-#### Updates flow from component to component in a top-down, parent to child manner. Don't skip the line.
+#### Updates flow from component to component in a top-down, parent to child manner. Don't skip the line without a good rationale.
 
 It's easy to reason about this unidirectional system.
 
@@ -53,13 +73,11 @@ Components are things, like nouns.
 
 ---
 
-### View Components
+## API
 
-#### Components that have a view are view components (Views).
+#### Components wrap an HTML element.
 
-#### Views are components that wrap an HTML element.
-
-#### Each view exposes the `$` property as a reference to the wrapped HTML element.
+#### Each component exposes the `$` property as a reference to the wrapped HTML element.
 
 #### External code can interact with the view's `$` property.
 
