@@ -1,6 +1,6 @@
 # View Component Design Pattern <!-- omit in toc -->
 
-A simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications or widgets with view components that encapsulate UI state while keeping the pattern as simple as possible.
+A simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications or widgets with view components that encapsulate state while keeping the pattern as simple as possible.
 
 ---
 
@@ -19,11 +19,13 @@ A simple design pattern for JavaScript frontend development. The goal of this de
 
 For this document, the term "component" refers to a view component.
 
-#### For this document, application state represents the totality of the state for a group of components as a whole.
+#### Application state represents the totality of the state that is presented to users.
 
-The group of components could be an application or a complex aggregate component.
+In other words, the application state refers to the state that is displayed by the application's "view".
 
-#### Application state can be broken into smaller parts that are individually known as simply _state_. In this document, _state_ refers to a part of application state.
+#### Application state can be broken into smaller parts that are individually known as simply _state_.
+
+In this document, _state_ refers to a part of the application state.
 
 #### Application state is presented via a group of components, with a single root component parenting a tree of child components.
 
@@ -31,11 +33,11 @@ All components have a parent component, with the only exception being the root c
 
 This tree of components is referred to as the "component tree".
 
-#### Each component may have its own internal state, controller code, and a view.
+#### A component's view is its state representation, its reflection of state to the display.
+
+#### Each component may have its own internal state and controller code.
 
 Components are MVC components.
-
-#### A component's view is its state representation, its reflection of state to the display.
 
 #### All components are required to have a view.
 
