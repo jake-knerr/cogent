@@ -19,13 +19,13 @@ A simple design pattern for JavaScript frontend development. The goal of this de
 
 For this document, the term "component" refers to a view component.
 
-#### UI state represents the totality of the user interface state for a group of components as a whole.
+#### For this document, application state represents the totality of the state for a group of components as a whole.
 
 The group of components could be an application or a complex aggregate component.
 
-#### UI state can be broken into smaller parts that are individually known as simply _state_. In this document, _state_ refers to a part of UI state.
+#### Application state can be broken into smaller parts that are individually known as simply _state_. In this document, _state_ refers to a part of application state.
 
-#### UI state is presented via a group of components, with a single root component parenting a tree of child components.
+#### Application state is presented via a group of components, with a single root component parenting a tree of child components.
 
 All components have a parent component, with the only exception being the root component.
 
