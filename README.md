@@ -1,6 +1,6 @@
 # View Component Design Pattern <!-- omit in toc -->
 
-A simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications or widgets with view components that encapsulate application state while keeping the pattern as simple as possible.
+A simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications or widgets with view components that encapsulate UI state while keeping the pattern as simple as possible.
 
 ---
 
@@ -19,13 +19,13 @@ A simple design pattern for JavaScript frontend development. The goal of this de
 
 For this document, the term "component" refers to a view component.
 
-#### Application state represents the totality of the state for a group of components as a whole.
+#### UI state represents the totality of the user interface state for a group of components as a whole.
 
 The group of components could be an application or a complex aggregate component.
 
-#### Application state can be broken into smaller parts that are individually known as simply _state_. In this document, _state_ refers to a part of application state.
+#### UI state can be broken into smaller parts that are individually known as simply _state_. In this document, _state_ refers to a part of UI state.
 
-#### Application state is presented via a group of components, with a single root component parenting a tree of child components.
+#### UI state is presented via a group of components, with a single root component parenting a tree of child components.
 
 All components have a parent component, with the only exception being the root component.
 
