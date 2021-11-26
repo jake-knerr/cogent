@@ -1,6 +1,6 @@
 # View Component Design Pattern <!-- omit in toc -->
 
-A simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications or widgets with view components that encapsulate state while keeping the pattern as simple as possible.
+This document describes a simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications/widgets with view components that encapsulate state while keeping the pattern as simple as possible.
 
 ---
 
@@ -19,13 +19,13 @@ A simple design pattern for JavaScript frontend development. The goal of this de
 
 For this document, the term "component" refers to a view component.
 
-#### Application state represents the totality of the state that is presented to users.
+#### Application state represents the totality of the state presented to users.
 
-In other words, the application state refers to the state that is displayed by the application's "view".
+In other words, for this document application state refers to the state displayed by the application's "view."
 
 #### Application state can be broken into smaller parts that are individually known as simply _state_.
 
-In this document, _state_ refers to a part of the application state.
+For this document, _state_ refers to a part of the application state.
 
 #### Application state is presented via a group of components, with a single root component parenting a tree of child components.
 
@@ -33,17 +33,19 @@ All components have a parent component, with the only exception being the root c
 
 This tree of components is referred to as the "component tree".
 
+#### All components are required to have a view.
+
 #### A component's view is its state representation, its reflection of state to the display.
 
 #### Each component may have its own internal state and controller code.
 
 Components are MVC components.
 
-#### All components are required to have a view.
+#### Parent components manage the state of child components. They pass the child component state, and they modify their child components' state.
 
-#### Parent components manage the state of child components. They pass the child component state and they modify their child components' state.
+Components do not directly modify the state passed to them by a parent component. Instead, the state that is passed to them is managed by their parent.
 
-Components do not directly modify the state passed to them by a parent component. Components may manage their own internal state, but the state that is passed to them is managed by their parent.
+However, components may manage their own internal state.
 
 #### Parent components handle the process of adding child components to themselves. In other words, components do not add themselves to the component tree.
 
@@ -81,7 +83,7 @@ Components are things, like nouns.
 
 #### Each component exposes the `$` property as a reference to the wrapped HTML element.
 
-#### External code can interact with the view's `$` property.
+#### External code can interact with the `$` property.
 
 In other words, the `$` property is public. This prevents creating redundant wrapper code to interact with the DOM element when the DOM already provides an extensive API.
 
