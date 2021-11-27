@@ -25,7 +25,7 @@ In other words, for this document application state refers to the state displaye
 
 #### Application state can be broken into smaller parts that are individually known as simply _state_.
 
-For this document, _state_ refers to a part of the application state.
+In other words, for this document _state_ refers to a part of the application state.
 
 #### Application state is presented via a group of components, with a single root component parenting a tree of child components.
 
@@ -43,7 +43,7 @@ Components are MVC components.
 
 #### Parent components manage the state of child components. They pass the child component state, and they modify their child components' state.
 
-Components do not directly modify the state passed to them by a parent component. Instead, the state that is passed to them is managed by their parent.
+Components do not directly modify the state passed to them by a parent component. Instead, the state that is passed to them is managed by a parent component.
 
 However, components may manage their own internal state.
 
@@ -57,9 +57,9 @@ However, typically a parent component's HTML will be the parent element for chil
 
 #### Components do not need to know anything about their parent component.
 
-#### A component should only change state if it manages that part of the state.
+#### A component should only change a particular state if it manages the particular state.
 
-A particular state should be managed by the component that is (1) closest to where the state is _used_ and also (2) parents all the other components that use the state. This way, if the component managing state mutates said state, it can handle sending the updates to all of the children who depend on the state.
+A state should be managed by the component that is (1) closest to where the state is _used_ and also (2) parents all the other components that use the state. This way, if the component managing state mutates said state, it can handle sending the updates to all of the children who depend on the state.
 
 Note that what matters is where the state is _used_. State may be stored higher up in the component tree, but it is where it is actually used that counts when determining what component can mutate the state. For example, data may be stored on the root component, but where it is used determines what component manages it and can mutate it.
 
