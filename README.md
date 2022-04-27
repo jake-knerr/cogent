@@ -6,7 +6,7 @@ This document describes a simple design pattern for JavaScript frontend developm
 
 ## Copyright <!-- omit in toc -->
 
-© Jake Knerr at Blotli.
+Jake Knerr © Ardisia Labs LLC
 
 ---
 
