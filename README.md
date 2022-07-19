@@ -66,6 +66,8 @@ However, typically a parent component's HTML will be the parent element for chil
 
 #### Views can make changes to the store and react to changes to the store.
 
+Since parent views are added before child views, it is possible to subscribe to store changes so that parent views react to state changes before child views.
+
 #### Components do not need to know anything about their parent component.
 
 #### All component names are nounal.
