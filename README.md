@@ -13,7 +13,7 @@ Jake Knerr © Ardisia Labs LLC
 ## Table of Contents <a id="toc" name="toc"></a> <!-- omit in toc -->
 
 - [State Management](#state-management)
-- [View Components](#view-components)
+- [View Componentss](#view-componentss)
 - [API](#api)
 
 ## State Management
@@ -26,7 +26,7 @@ Jake Knerr © Ardisia Labs LLC
 
 This is how the application's components can react to state changes.
 
-## View Components
+## View Componentss
 
 For this document, the term "component" refers to a view component.
 
