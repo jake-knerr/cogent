@@ -1,6 +1,6 @@
 # View Component Design Pattern <!-- omit in toc -->
 
-This document describes a simple design pattern for JavaScript frontend development. The goal of this design pattern is to provide a technique to build applications/widgets with view components that encapsulate state while keeping the pattern as simple as possible.
+This document describes a simple design pattern for JavaScript frontend development.
 
 ---
 
@@ -13,7 +13,7 @@ Jake Knerr © Ardisia Labs LLC
 ## Table of Contents <a id="toc" name="toc"></a> <!-- omit in toc -->
 
 - [State Management](#state-management)
-- [View Componentss](#view-componentss)
+- [View Components](#view-components)
 - [API](#api)
 
 ## State Management
@@ -24,9 +24,9 @@ Jake Knerr © Ardisia Labs LLC
 
 #### The store is event-based. Handler functions can listen for changes to the store.
 
-This is how the application's components can react to state changes.
+This is how the application components can react to state changes.
 
-## View Componentss
+## View Components
 
 For this document, the term "component" refers to a view component.
 
@@ -66,8 +66,6 @@ However, typically a parent component's HTML will be the parent element for chil
 
 #### Views can make changes to the store and react to changes to the store.
 
-Since child views are always added after parent components, updates from the store should flow down the component tree in a top-down manner.
-
 #### Components do not need to know anything about their parent component.
 
 #### All component names are nounal.
@@ -88,7 +86,7 @@ Components are things, like nouns.
 
 In other words, the `$` property is a read-only public property.
 
-#### Parent view's should not directly mutate a child's HTML/CSS state via the `$` property. They should instead use the child view's API.
+#### A parent view should not directly mutate a child view's HTML/CSS state via the `$` property. They should instead use the child view's API.
 
 **[⬆ Table of Contents](#toc)**
 
