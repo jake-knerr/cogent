@@ -34,10 +34,6 @@ For this document, the term "component" refers to a view component.
 
 In other words, for this document application state refers to the state displayed by the application's "view."
 
-#### Application state can be broken into smaller parts that are individually known as simply _state_.
-
-In other words, for this document _state_ refers to a part of the application state.
-
 #### Application state is presented via a group of components, with a single root component parenting a tree of child components.
 
 All components have a parent component, with the only exception being the root component.
