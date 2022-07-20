@@ -12,19 +12,9 @@ Jake Knerr © Ardisia Labs LLC
 
 ## Table of Contents <a id="toc" name="toc"></a> <!-- omit in toc -->
 
-- [State Management](#state-management)
 - [View Components](#view-components)
 - [API](#api)
-
-## State Management
-
-#### Applications use a store for state management that is shared between components.
-
-#### The store can be updated or read anywhere in the application.
-
-#### The store is event-based. Handler functions can listen for changes to the store.
-
-This is how the application components can react to state changes.
+- [Services](#services)
 
 ## View Components
 
@@ -62,8 +52,6 @@ This is important because it ensures that parents are added before children, whi
 
 #### Components do not need to know anything about their parent component.
 
-#### Components can make changes to the store and react to changes to the store.
-
 #### All component names are nounal.
 
 Components are things, like nouns.
@@ -79,6 +67,20 @@ Components are things, like nouns.
 #### Each component exposes the `$` property as a reference to the wrapped HTML element.
 
 #### External code can interact with the `$` property.
+
+**[⬆ Table of Contents](#toc)**
+
+---
+
+## Services
+
+#### View components should use services to handle cross-cutting concerns of the applications.
+
+Services include a event-based store, tooltips, router, etc.
+
+#### Services should not communicate with each-other.
+
+This keep services generalized for reuse. Think of the view component as a controller.
 
 **[⬆ Table of Contents](#toc)**
 
