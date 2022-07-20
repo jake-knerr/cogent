@@ -82,7 +82,7 @@ Components are things, like nouns.
 
 #### External code can interact with the `$` property in read-only manner.
 
-In other words, the `$` property is a read-only public property.
+In other words, the `$` property is a read-only public property. Event listeners are fine.
 
 #### A parent view should not directly mutate a child view's HTML/CSS state via the `$` property. They should instead use the child view's API.
 
