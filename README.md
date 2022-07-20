@@ -84,7 +84,7 @@ In other words, the `$` property is a read-only public property. Reading attribu
 
 #### A parent component should not directly mutate a child component's HTML/CSS state via the `$` property. They should instead use the child component's API.
 
-This requirements helps design document and design the component's interface. Opening up the `$` property for mutation makes a component's interface unreasonably massive.
+This requirements helps design document and design the component's interface. Opening up the `$` property for mutation makes a component's interface unreasonably massive, which makes encapsulating the component's state impossible.
 
 **[⬆ Table of Contents](#toc)**
 
