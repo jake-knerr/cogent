@@ -82,7 +82,7 @@ Components are things, like nouns.
 
 In other words, the `$` property is a read-only public property. Reading attributes, setting event listeners, and read-only operations are allowed.
 
-#### A parent view should not directly mutate a child view's HTML/CSS state via the `$` property. They should instead use the child view's API.
+#### A parent component should not directly mutate a child component's HTML/CSS state via the `$` property. They should instead use the child component's API.
 
 **[⬆ Table of Contents](#toc)**
 
