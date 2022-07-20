@@ -32,8 +32,6 @@ For this document, the term "component" refers to a view component.
 
 #### Application state represents the totality of the state presented to users.
 
-In other words, for this document application state refers to the state displayed by the application's "view."
-
 #### Application state is presented via a group of components, with a single root component parenting a tree of child components.
 
 All components have a parent component, with the only exception being the root component.
@@ -60,11 +58,11 @@ This does not necessarily mean that the parent's HTML is the parent element for 
 
 However, typically a parent component's HTML will be the parent element for child component HTML.
 
-#### Views can make changes to the store and react to changes to the store.
-
-Since parent views are added before child views, it is possible to subscribe to store changes so that parent views react to state changes before child views.
+This is important because it ensures that parents are added before children, which means that parent components can react to state changes before child components.
 
 #### Components do not need to know anything about their parent component.
+
+#### Components can make changes to the store and react to changes to the store.
 
 #### All component names are nounal.
 
@@ -82,7 +80,7 @@ Components are things, like nouns.
 
 #### External code can interact with the `$` property in read-only manner.
 
-In other words, the `$` property is a read-only public property. Event listeners are fine.
+In other words, the `$` property is a read-only public property. Reading attributes, setting event listeners are fine, and read-only operations are allowed.
 
 #### A parent view should not directly mutate a child view's HTML/CSS state via the `$` property. They should instead use the child view's API.
 
