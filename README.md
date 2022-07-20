@@ -18,7 +18,7 @@ Jake Knerr © Ardisia Labs LLC
 
 ## State Management
 
-#### Applications use a store for state management.
+#### Applications use a store for state management that is shared between components.
 
 #### The store can be updated or read anywhere in the application.
 
