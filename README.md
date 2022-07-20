@@ -78,13 +78,7 @@ Components are things, like nouns.
 
 #### Each component exposes the `$` property as a reference to the wrapped HTML element.
 
-#### External code can interact with the `$` property in read-only manner.
-
-In other words, the `$` property is a read-only public property. Reading attributes, setting event listeners, and read-only operations are allowed.
-
-#### A parent component should not directly mutate a child component's HTML/CSS state via the `$` property. They should instead use the child component's API.
-
-This requirements helps design document and design the component's interface. Opening up the `$` property for mutation makes a component's interface unreasonably massive, which makes encapsulating the component's state impossible.
+#### External code can interact with the `$` property.
 
 **[⬆ Table of Contents](#toc)**
 
