@@ -14,41 +14,42 @@ Jake Knerr © Ardisia Labs LLC
 
 - [View Components](#view-components)
 - [API](#api)
+- [Reactive Store](#reactive-store)
 - [Services](#services)
 
 ## View Components
 
 For this document, the term "component" refers to a view component.
 
-#### Application state represents the totality of the state presented to users.
+#### A component wraps a view, which is HTML and CSS. A component can also be a controller, which manages the component's view, the component's internal state, and any application state that it "owns".
 
-#### Application state is presented via a group of components, with a single root component parenting a tree of child components.
+#### An application is a hierarchy of components, with a single root component parenting a tree of child components.
 
-All components have a parent component, with the only exception being the root component.
+In totality, components present the application state to the user. Each component being responsible for a different slice of the application state.
 
-This tree of components is referred to as the "component tree".
+#### Parent components create and add child components. In other words, components do not add themselves to the component tree.
 
-#### All components are required to have a view.
-
-#### A component's view is its state representation, its reflection of state to the display.
-
-#### Each component may have its own internal state and controller code distinct from application state.
-
-Components are MVC components.
-
-#### Parent components can manage the state of child components. Components can also manage their own state.
-
-Use whatever technique is more convenient.
-
-#### Parent components handle the process of adding child components to themselves. In other words, components do not add themselves to the component tree.
-
-This includes adding a component's view to the display. A parent component adds a child component's view to the display.
+This includes adding a child component's view to the display.
 
 This does not necessarily mean that the parent's HTML is the parent element for the child's HTML. For example, assume a child component has a modal view. The modal view is parented by `document.body`, not the parent's HTML. Thus, the parent's view does not strictly parent the child's view. Rather, the parent component is responsible for adding the child's view to the display.
 
 However, typically a parent component's HTML will be the parent element for child component HTML.
 
-This is important because it ensures that parents are added before children, which means that parent components can react to state changes before child components.
+#### Component manage the portion of the application state ("state") that they "own". Ownership is determined by where the state is initially needed in the application. If multiple components need the state and one component parents the others, then the parent component owns the state. Otherwise, the first shared parent component owns the state.
+
+#### Parent components pass state to child components.
+
+The convention is that `props` refers to the immutable state passed from parent to child components. It is typically passed in a child component's constructor and updated using a `#update(props)` method.
+
+Note, each component may have its own internal state distinct from the state passed via `props`.
+
+#### Updates to state need to flow uni-directionally from the component that owns the state to the children that need the new state.
+
+#### Components that own a slice of state are required to handle updating it and delivering updates to child components.
+
+#### Child components can update state they do not own by calling callbacks passed to them by the parent that owns the state. This is referred to as "lifting state up".
+
+See the section on a reactive store for an alternative technique to lifting state up via callbacks.
 
 #### Components do not need to know anything about their parent component.
 
@@ -64,23 +65,37 @@ Components are things, like nouns.
 
 #### Components wrap an HTML element.
 
-#### Each component exposes the `$` property as a reference to the wrapped HTML element.
+#### Each component exposes the read-only `$` property as a reference to the wrapped HTML element.
 
-#### External code can interact with the `$` property.
+#### Parent components cannot mutate a child's view directly.
 
 **[⬆ Table of Contents](#toc)**
 
 ---
 
+## Reactive Store
+
+#### A reactive store is an object that can set/get stored data and supports change listeners on the stored data.
+
+Such a store can be used to store application state.
+
+#### A component that owns a slice of stored state can subscribe to changes to the state in the store, read, and set such state in the store.
+
+#### A component that does not own a slice of state can set such state on the store, but not read or subscribe to changes on it.
+
+This ensures that updates flow from the owning component.
+
+#### This is a useful technique because this way parent components do not have to pass state update callbacks down a chain of child components.
+
+A reactive store is most useful when you have components that own state passing update callbacks into deep hierarchies.
+
 ## Services
 
-#### View components should use services to handle cross-cutting concerns of the applications.
+#### Use services to handle well-defined business logic.
 
-Services include a event-based store, tooltips, router, etc.
+#### Keep the controller code in a component thin, and delegate to services when feasible.
 
-#### Services should not communicate with each-other.
-
-This keep services generalized for reuse. Think of the view component as a controller.
+#### Services can communicate with each-other.
 
 **[⬆ Table of Contents](#toc)**
 
