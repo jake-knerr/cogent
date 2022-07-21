@@ -21,7 +21,7 @@ Jake Knerr © Ardisia Labs LLC
 
 For this document, the term "component" refers to a view component.
 
-#### A component wraps a view, which is HTML and CSS. A component can also be a controller, which manages the component's view, the component's internal state, and any application state that it "owns".
+#### A component wraps a view, which is HTML and CSS. A component can also be a controller, which manages the component's view, internal state, and any application state that it "owns".
 
 #### An application is a hierarchy of components, with a single root component parenting a tree of child components.
 
@@ -35,21 +35,27 @@ This does not necessarily mean that the parent's HTML is the parent element for 
 
 However, typically a parent component's HTML will be the parent element for child component HTML.
 
-#### Component manage the portion of the application state ("state") that they "own". Ownership is determined by where the state is initially needed in the application. If multiple components need the state and one component parents the others, then the parent component owns the state. Otherwise, the first shared parent component owns the state.
+#### Component manage the portion of the application state ("state") that they "own". Ownership is determined by where the state is needed in the application. If multiple components need the state and one component parents the others, then the parent component owns the state. Otherwise, the first shared parent component owns the state.
 
 #### Parent components pass state to child components.
+
+Passed state is immutable in child components.
 
 The convention is that `props` refers to the immutable state passed from parent to child components. It is typically passed in a child component's constructor and updated using a `#update(props)` method.
 
 Note, each component may have its own internal state distinct from the state passed via `props`.
 
-#### Updates to state need to flow uni-directionally from the component that owns the state to the children that need the new state.
+#### Updates to state flow uni-directionally from the component that owns the state to the children that need the new state.
 
 #### Components that own a slice of state are required to handle updating it and delivering updates to child components.
 
 #### Child components can update state they do not own by calling callbacks passed to them by the parent that owns the state. This is referred to as "lifting state up".
 
 See the section on a reactive store for an alternative technique to lifting state up via callbacks.
+
+#### Parent components can only interact with a child's view directly by either adding or removing it from display.
+
+All other communication is through `props`.
 
 #### Components do not need to know anything about their parent component.
 
@@ -75,13 +81,13 @@ Components are things, like nouns.
 
 ## Reactive Store
 
-#### A reactive store is an object that can set/get stored data and supports change listeners on the stored data.
+#### A reactive store is an object that can get/set stored data and supports change listeners on the stored data.
 
 Such a store can be used to store application state.
 
-#### A component that owns a slice of stored state can subscribe to changes to the state in the store, read, and set such state in the store.
+#### A component that owns a slice of stored state can read the state from the store, set such state in the store, and subscribe to changes to the state in the store.
 
-#### A component that does not own a slice of state can set such state on the store, but not read or subscribe to changes on it.
+#### A component that does not own a slice of state can set such state on the store, but cannot read or subscribe to changes on it.
 
 This ensures that updates flow from the owning component.
 
@@ -93,9 +99,11 @@ A reactive store is most useful when you have components that own state passing 
 
 #### Use services to handle well-defined business logic.
 
-#### Keep the controller code in a component thin, and delegate to services when feasible.
+This includes view-related operations.
 
-#### Services can communicate with each-other.
+#### Keep a component's controller thin and delegate to services when feasible.
+
+#### Services can call other services.
 
 **[⬆ Table of Contents](#toc)**
 
