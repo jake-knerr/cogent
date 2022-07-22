@@ -39,9 +39,7 @@ However, typically a parent component's HTML will be the parent element for chil
 
 #### Parent components pass state to child components.
 
-Passed state is immutable in child components.
-
-The convention is that `props` refers to the immutable state passed from parent to child components. It is typically passed in a child component's constructor and updated using a `#update(props)` method.
+The convention is that `props` refers to the state passed from parent to child components. It is typically passed in a child component's constructor and updated using a `#update(props)` method.
 
 Note, each component may have its own internal state distinct from the state passed via `props`.
 
