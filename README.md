@@ -41,7 +41,7 @@ However, typically a parent component's HTML will be the parent element for chil
 
 #### Parent components can pass state to child components.
 
-The convention is that `props` refers to the state passed from parent to child components. It is typically passed in a child component's constructor and updated using a `#update(props)` method.
+The convention is that `props` refers to the state `Object` passed from parent to child components. It is typically passed in a child component's constructor. State updates are updated using a `#update(props)` method. Note, updates can be atomic, which means that smaller pieces of state can be passed for each update. The entire dataset of the initial `props` object does not need to be sent on updates.
 
 Note, a component may own state that is not needed downstream and not passed to child components.
 
