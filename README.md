@@ -99,7 +99,7 @@ A reactive store is most useful when you have components that own state passing 
 
 #### Use services to handle well-defined business logic.
 
-This includes view-related operations.
+#### Services should not directly affect the view. Services focus on state and business logic.
 
 #### Keep a component's controller thin and delegate to services when feasible.
 
