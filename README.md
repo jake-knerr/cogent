@@ -29,6 +29,10 @@ In totality, components present the application state to the user.
 
 #### Application state refers to the totality of state. A subset of application state is referred to henceforth as "state".
 
+#### Component manage the state that they "own". Ownership is determined by where the state is needed in the view. If multiple components need the state and one component parents the others, then the parent component owns the state. Otherwise, the first shared parent component owns the state.
+
+Ownership of state means that the owning component is the only component that can change state or react to changes on the state. Only the owning component can propagate the state or changes to the state to child components.
+
 #### Parent components create and add child components. In other words, components do not add themselves to the component tree.
 
 This includes adding a child component's view to the display.
@@ -36,10 +40,6 @@ This includes adding a child component's view to the display.
 This does not necessarily mean that the parent's HTML is the parent element for the child's HTML. For example, assume a child component has a modal view. The modal view is parented by `document.body`, not the parent's HTML. Thus, the parent's view does not strictly parent the child's view. Rather, the parent component is responsible for adding the child's view to the display.
 
 However, typically a parent component's HTML will be the parent element for child component HTML.
-
-#### Component manage the state that they "own". Ownership is determined by where the state is needed in the application. If multiple components need the state and one component parents the others, then the parent component owns the state. Otherwise, the first shared parent component owns the state.
-
-Ownership of state means that the owning component manages the data. It manages updating it and passing updates to child components.
 
 #### Parent components can pass state to child components.
 
@@ -101,7 +101,7 @@ Read view operations on the view are fine.
 
 #### Another technique is to use a shared event bus with the child firing a request and the parent fulfilling the request.
 
-Often, using services as an event bus is a good implementation.
+Often, using services as an event bus is a good implementation. The service listens for requests and fulfills them. State changes Are then propagated to the parent, state owning component.
 
 #### Remember that only the component that owns state can handle updates and pass the values to child components.
 
