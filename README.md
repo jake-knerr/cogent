@@ -14,8 +14,8 @@ Jake Knerr © Ardisia Labs LLC
 
 - [View Components](#view-components)
 - [API](#api)
-- [Reactive Store](#reactive-store)
 - [Services](#services)
+- [Lifting State Up](#lifting-state-up)
 
 ## View Components
 
@@ -39,19 +39,17 @@ However, typically a parent component's HTML will be the parent element for chil
 
 #### Component manage the state that they "own". Ownership is determined by where the state is needed in the application. If multiple components need the state and one component parents the others, then the parent component owns the state. Otherwise, the first shared parent component owns the state.
 
+Ownership of state means that the owning component manages the data. It manages updating it and passing updates to child components.
+
 #### Parent components can pass state to child components.
 
-The convention is that `props` refers to the state `Object` passed from parent to child components. It is typically passed in a child component's constructor. State updates are updated using a `#update(props)` method. Note, updates can be atomic, which means that smaller pieces of state can be passed for each update. The entire dataset of the initial `props` object does not need to be sent on updates.
+The convention is that `props` refers to the state `Object` passed from parent to child components. `props` are only passed to a child component via the child's `#setProps(props: Object)` method. Note, updates can be atomic, which means that smaller pieces of state can be passed for each update. The entire dataset of the initial `props` object does not need to be sent on updates.
 
 Note, a component may own state that is not needed downstream and not passed to child components.
 
 #### State updates flow uni-directionally to components from the parent that owns the state to the children that need the new state.
 
 #### Components that own state are required to handle updating it and delivering updates to child components.
-
-#### Child components can update state they do not own by calling callbacks passed to them by the parent that owns the state. This is referred to as "lifting state up".
-
-See the section on a reactive store for an alternative technique to lifting state up via callbacks.
 
 #### Parent components can only interact with a child's view directly by either adding or removing it from display.
 
@@ -73,39 +71,37 @@ Components are things, like nouns.
 
 #### Each component exposes the read-only `$` property as a reference to the wrapped HTML element.
 
-#### Parent components cannot mutate a child's view directly. Instead they must use the `#update(props)` method of the child component.
+#### Parent components cannot mutate a child's view directly. Instead they must use the `#setProps(props: Object)` method of the child component.
 
 **[⬆ Table of Contents](#toc)**
 
 ---
 
-## Reactive Store
-
-#### A reactive store is an object that can get/set stored data and supports change listeners on the stored data.
-
-Such a store can be used to store application state.
-
-#### A component that owns stored state can read the state from the store, set such state in the store, and subscribe to changes to the state in the store.
-
-#### A component that does not own state can set such state on the store, but cannot read or subscribe to changes on it.
-
-This ensures that updates flow from the owning component.
-
-#### This is a useful technique because this way parent components do not have to pass state update callbacks down a chain of child components.
-
-A reactive store is most useful when you have components that own state passing update callbacks into deep hierarchies.
-
 ## Services
 
-#### Use services to handle well-defined application state changes.
+#### Use services to manage well-defined aspects of application state.
 
-#### Services should not directly affect the view. Services focus on state and data operations.
+#### Services should not directly change the view. Services focus on state and data operations.
 
 Read view operations on the view are fine.
 
 #### Keep a component's controller thin and delegate to services when feasible.
 
 #### Services can call other services.
+
+**[⬆ Table of Contents](#toc)**
+
+---
+
+## Lifting State Up
+
+#### When a child component triggers an update to state owned by a parent component, this is called "lifting state up".
+
+#### One way to lift state up is for parent components to pass callbacks to child components to handle state updates.
+
+#### Another technique is to use a shared event bus with the child firing a request and the parent fulfilling the request.
+
+Often, using services as an event bus is a good implementation.
 
 **[⬆ Table of Contents](#toc)**
 
