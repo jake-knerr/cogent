@@ -81,6 +81,8 @@ Components are things, like nouns.
 
 #### Use services to manage well-defined aspects of application state.
 
+#### The component that owns the state that is passed to a service must initialize the service, and is the only component that can react to changes to the state made by the service.
+
 #### Services should not directly change the view. Services focus on state and data operations.
 
 Read view operations on the view are fine.
