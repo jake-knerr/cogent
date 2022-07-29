@@ -103,6 +103,10 @@ Read view operations on the view are fine.
 
 Often, using services as an event bus is a good implementation.
 
+#### Remember that only the component that owns state can handle updates and pass the values to child components.
+
+A child components can trigger an update to state, but can only work with the value that is passed to it by a parent component.
+
 **[⬆ Table of Contents](#toc)**
 
 ---
