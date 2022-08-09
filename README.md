@@ -1,6 +1,13 @@
-# View Component Design Pattern <!-- omit in toc -->
+# Cogent <!-- omit in toc -->
 
-This document describes a simple design pattern for JavaScript frontend development.
+_Cogent_ is a simple design pattern for JavaScript frontend development.
+
+See below for further explanation.
+
+---
+
+**co·gent** / _adjective_<br>
+clear, logical, and convincing
 
 ---
 
@@ -12,18 +19,43 @@ Jake Knerr © Ardisia Labs LLC
 
 ## Table of Contents <a id="toc" name="toc"></a> <!-- omit in toc -->
 
+- [Overview](#overview)
+- [Application State](#application-state)
 - [View Components](#view-components)
-- [API](#api)
+  - [View API](#view-api)
 - [Services](#services)
 - [Lifting State Up](#lifting-state-up)
+- [Core](#core)
+- [Utilities](#utilities)
+
+## Overview
+
+Applications are built using four different types of components:
+
+1. _view_
+1. _services_
+1. _core_, and
+1. _utilities_
+
+## Application State
 
 ## View Components
 
-For this document, the term "component" refers to a view component.
+#### A _view component_ ("component") wraps a _view_, which is HTML and CSS. A component can also be a controller that manages the component's view and any internal state.
 
-#### A component wraps a view, which is HTML and CSS. A component can also be a controller, which manages the component's view and any application state that it "owns".
+_A simple view component._
 
-#### An application is a hierarchy of components, with a single root component parenting a tree of child components.
+```javascript
+class ViewComponent {
+  $ = document.createElement("div"); // view
+
+  constructor() {
+    this.$.onclick = () => console.log("click"); // controller code
+  }
+}
+```
+
+#### The visual aspect of an application is a hierarchy of components, with a single root component parenting a tree of child components.
 
 In totality, components present the application state to the user.
 
@@ -31,7 +63,7 @@ In totality, components present the application state to the user.
 
 #### Component manage the state that they "own". Ownership is determined by where the state is needed in the view. If multiple components need the state and one component parents the others, then the parent component owns the state. Otherwise, the first shared parent component owns the state.
 
-Ownership of state means that the owning component is the only component that can change state or react to changes on the state. Only the owning component can propagate the state or changes to the state to child components.
+Ownership of state means that the owning component is the only component that can access the state without having it passed to it by a parent component. Only the owning component can propagate the state or changes to the state to child components.
 
 #### Parent components create and add child components. In other words, components do not add themselves to the component tree.
 
@@ -65,7 +97,7 @@ Components are things, like nouns.
 
 ---
 
-## API
+### View API
 
 #### Components wrap an HTML element.
 
@@ -81,11 +113,15 @@ Components are things, like nouns.
 
 #### Use services to manage well-defined aspects of application state.
 
-#### The component that owns the state that is passed to a service must initialize the service, and is the only component that can react to changes to the state made by the service.
+#### The component that owns the state that is managed by a service is the only component that can react to changes to the state made by the service.
 
-#### Services should not directly change the view. Services focus on state and data operations.
+If multiple components own state that is managed by the service than the service has grown too large.
 
-Read view operations on the view are fine.
+#### Components can only read data from a service if they own the data.
+
+#### Services should not directly change the view. Read view operations on the view are fine.
+
+#### Services can be used to trigger view-related changes by asking the service to pass the request to the
 
 #### Keep a component's controller thin and delegate to services when feasible.
 
@@ -101,9 +137,9 @@ Read view operations on the view are fine.
 
 #### One way to lift state up is for parent components to pass callbacks to child components to handle state updates.
 
-#### Another technique is to use a shared event bus with the child firing a request and the parent fulfilling the request.
+#### Another technique is for child components to call update methods on a service, with the changes propagating to the state's owner.
 
-Often, using services as an event bus is a good implementation. The service listens for requests and fulfills them. State changes Are then propagated to the parent, state owning component.
+Services should emit events that pass changed data to owning component, or fire requests to fulfill state changes.
 
 #### Remember that only the component that owns state can handle updates and pass the values to child components.
 
@@ -112,3 +148,13 @@ A child components can trigger an update to state, but can only work with the va
 **[⬆ Table of Contents](#toc)**
 
 ---
+
+## Core
+
+**[⬆ Table of Contents](#toc)**
+
+---
+
+## Utilities
+
+**[⬆ Table of Contents](#toc)**
