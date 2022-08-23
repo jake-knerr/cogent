@@ -1,3 +1,29 @@
+- components drive the app. they manage views, and initialize services, so maybe they do own state
+  - component driven design CDD
+- components "own" aspects of application state.
+- services are modules that components delegate responsibility to, and downstream components can lift state up by triggering updates to them
+
+  - they can handle anything, but state changes need ot be handled by the component that owns that aspect of state that changes
+
+- The component `view` is 100% private. Only `forge` and `remove` can add or remove the component from the application view.
+  - Extensions will not be able to access the dom element.
+  - Think of html/css as a markup language to describe the view. Components use html to describe their view, but the application is components.
+- components should have a constructor with `props` for any initialization parameter.
+
+  - Use `props` always so component mixins have a consistent api to work with.
+  - use mixins to add shared functionality.
+  - Use decorators to create higher order components
+  - Only 1 possible (and optional) property - 'update(Object) : undefined`
+    - why not use an interface? This enforces that there is no way to get data back OUT
+    - props are immutable
+  - Now, the component's DOM nodes are always accessible via the DOM outside the component. Do not access it. IMpossible to stop, even custom elements, shadows DOM, whatever can not stop external code from Fing with internal DOM structure.
+
+- Shadow DOM
+  - though about it, but
+    - would deviate from websites css handling because of JS being required
+    - the host element can still be accessed and modified, defeating the point
+    - undoubtedly will have implementation bugs
+
 # Cogent <!-- omit in toc -->
 
 _Cogent_ is a simple design pattern for JavaScript frontend development.
