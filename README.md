@@ -1,28 +1,45 @@
-- components drive the app. they manage views, and initialize services, so maybe they do own state
-  - component driven design CDD
-- components "own" aspects of application state.
-- services are modules that components delegate responsibility to, and downstream components can lift state up by triggering updates to them
+- TODO
 
-  - they can handle anything, but state changes need ot be handled by the component that owns that aspect of state that changes
+- # Principles
 
-- The component `view` is 100% private. Only `forge` and `remove` can add or remove the component from the application view.
-  - Extensions will not be able to access the dom element.
-  - Think of html/css as a markup language to describe the view. Components use html to describe their view, but the application is components.
-- components should have a constructor with `props` for any initialization parameter.
+  - App is a hierarchy of components.
+  - A component has a view which is parented by a single top-level HTMLElement.
+    - HTML/CSS is a way to describe view.
+    - Hang the top-level node off the `$` property of the component.
+    - Each component is a CHESS component as well.
+    - External code can read or mutate the top-level view node using the node's API or the component's API. However, external code cannot change the top-level node's internal HTML structure directly through the top-level node, only the component API can.
+      - Think of the internal structure as a closed shadow DOM. Only component level APIs can change the internal structure.
+  - A component "owns" state if it is the first component that needs the state, or is the shared parent of the components that need the state.
+    - State is any data used or displayed by the application.
+  - Notifications of state updates flow downwards from the owning component.
+  - Child components can "lift state up" by calling callbacks passed to them or by using the service pattern.
+    - Child components can update state owned higher up, but the notification of the state change should flow downwards to each interested component in a top-down manner.
+      - This ensures that parent react to changes before children.
+  - API
+    - Components only take a single object parameter on initialization called props.
+      - This way it is easy to pass around classes and use mixins.
+    - Any properties on the props object that are not used by the component API are set to the underlying view element.
 
-  - Use `props` always so component mixins have a consistent api to work with.
-  - use mixins to add shared functionality.
-  - Use decorators to create higher order components
-  - Only 1 possible (and optional) property - 'update(Object) : undefined`
-    - why not use an interface? This enforces that there is no way to get data back OUT
-    - props are immutable
-  - Now, the component's DOM nodes are always accessible via the DOM outside the component. Do not access it. IMpossible to stop, even custom elements, shadows DOM, whatever can not stop external code from Fing with internal DOM structure.
+- ## Service Pattern
+
+  - A single component may delegate to a service the management of an aspect of state owned by the initializing component, and/or creates methods for child components to lift state up and dispatch updates.
+    - Delegation can simply be intent, no need to explicitly pass owning component to service if unnecessary. Although, typically the delegating component will pass itself in.
+  - Service can do anything that the delegator can.
+  - Services can be registered and then used by any component to update state or read state. Updates need to flow downwards through all the notified components from the owning component.
+  - Service can automatically send notifications based on tree structure, which ensures a top-down flow.
+  - That's it. Don't overthink it.
 
 - Shadow DOM
-  - though about it, but
-    - would deviate from websites css handling because of JS being required
-    - the host element can still be accessed and modified, defeating the point
-    - undoubtedly will have implementation bugs
+
+  - Great concept, with the fatal flaw of styling. Styles must be created either in a `style` tag in each fucking component or link to to a preloaded stylesheet. This sucks.
+  - A solution is `adopted stylesheets`. However, it does not work in Safari.
+  - Shadow DOM also precludes parents from changing styling in child fragments, although this may be a feature rather than a bug.
+  - If this gets resolved, components could simply become HTMLElements and drop the `$` property altogether.
+
+- Custom Elements
+
+- No children or attributes may be set in the constructor, like a normal `document.createElement()`.
+  - This is fatal because it requires tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, pressure to reflect properties to attributes.
 
 # Cogent <!-- omit in toc -->
 
