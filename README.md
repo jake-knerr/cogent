@@ -34,7 +34,8 @@
   - Great concept, with the fatal flaw of styling. Styles must be created either in a `style` tag in each fucking component or link to to a preloaded stylesheet. This sucks.
   - A solution is `adopted stylesheets`. However, it does not work in Safari.
   - Shadow DOM also precludes parents from changing styling in child fragments, although this may be a feature rather than a bug.
-  - If this gets resolved, components could simply become HTMLElements and drop the `$` property altogether.
+  - If this gets resolved, components _could_ simply become HTMLElements and drop the `$` property altogether.
+    - would lose creation via a constructor which I do like.
 
 - Custom Elements
 
