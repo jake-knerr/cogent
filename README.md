@@ -2,7 +2,7 @@
 
 _Cogent_ is a simple design pattern for JavaScript frontend development.
 
-This is a work in progress.
+This is a work in progresss.
 
 ---
 
