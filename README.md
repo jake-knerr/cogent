@@ -61,7 +61,7 @@ Delegation can simply be intent. There is no need to explicitly pass the owning 
 
 #### Services can do anything that the delegator can.
 
-#### Services can be registered and used by any component to update or read state. Updates must flow downwards through all the notified components from the owning component.
+#### Services can be registered and used by any component to update or read state. Notifications of updates must flow downwards through all the notified components from the owning component.
 
 Services can automatically send notifications based on a tree structure, which ensures a top-down flow.
 
