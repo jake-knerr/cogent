@@ -83,6 +83,6 @@ Shadow DOM also precludes parents from changing styling in child fragments, alth
 
 #### Another great idea with a fatal flaw.
 
-No children or attributes may be set in the constructor, like a normal `document.createElement()`. This would also preclude a `props` sent to the constructor, which is convenient.
+No children or attributes may be set in the constructor, like a normal `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient.
 
-This is fatal because it requires tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements create pressure to reflect properties to attributes.
+Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements create pressure to reflect properties to attributes.
