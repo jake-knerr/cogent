@@ -79,14 +79,10 @@ A solution is `adopted stylesheets.` However, it does not work in Safari.
 
 Shadow DOM also precludes parents from changing styling in child fragments, although this may be a feature rather than a bug.
 
-Shadow DOM would also preclude a `props` sent to the constructor, which is convenient.
-
-If styling gets resolved, components _could_ become HTMLElements and drop the `$` property altogether.
-
 ### Custom Elements
 
 #### Another great idea with a fatal flaw.
 
-No children or attributes may be set in the constructor, like a normal `document.createElement()`.
+No children or attributes may be set in the constructor, like a normal `document.createElement()`. This would also preclude a `props` sent to the constructor, which is convenient.
 
 This is fatal because it requires tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements create pressure to reflect properties to attributes.
