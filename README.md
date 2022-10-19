@@ -25,7 +25,7 @@ Think of HTML/CSS as the language to describe the view.
 
 #### Each component is a CHESS component as well.
 
-#### External code can read or mutate the top-level view node using the node's API or the component's API. However, external code cannot change the top-level node's internal HTML structure directly through the top-level node. Only the component API can change the top-level node's internal HTML structure.
+#### External code can read or mutate the top-level view element using the element's API or the component's API. However, external code cannot change the top-level element's internal HTML structure directly through the top-level element. Only the component API can change the top-level element's internal HTML structure.
 
 Think of the internal structure as a closed shadow DOM. Only component-level APIs can change internal structure.
 
