@@ -29,6 +29,10 @@ Think of HTML/CSS as the language to describe the view.
 
 Think of the internal structure as a closed shadow DOM. Only component-level APIs can change internal structure.
 
+#### Any component can read state from anywhere.
+
+For this reason, the document object is always available for read-only operations.
+
 #### Notifications of state updates flow downwards from the owning component.
 
 Child components can read or update state owned higher up, but the notification of the state change should flow downwards to each interested component in a top-down manner.
@@ -43,7 +47,7 @@ More on the service pattern later.
 
 #### A component is an object.
 
-#### Hang the top-level `HTMLElement` element from the `$` property of the component object.
+#### Hang the component's top-level `HTMLElement` element from the `$` property of the component object.
 
 #### Components only take a single object parameter on initialization called props.
 
