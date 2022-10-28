@@ -11,6 +11,14 @@ clear, logical, and convincing
 
 ## Components
 
+### Background
+
+One of the primary reasons web app development is challenging is how HTML and CSS are global and not encapsulated. HTML anywhere in the document can be accessed from any code, anywhere. CSS classes can be applied to any content on the page with confusing specificity rules.
+
+I believe that the popularity of React is due to the bundling of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
+
+Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript, while also providing a state management pattern. Cogent is a pattern and a set of conventions, not a code-based framework.
+
 ### Overview
 
 #### An app is a hierarchy of components.
@@ -23,11 +31,9 @@ clear, logical, and convincing
 
 Think of HTML/CSS as the language to describe the view.
 
-#### Each component is a CHESS component as well.
+#### External code can perform reads on the HTML and CSS structure of the component. However, external code cannot directly mutate the HTML or CSS of a component. External code can only mutate a component's HTML and CSS via the component's API.
 
-#### External code can read or mutate the top-level view element using the element's API or the component's API. However, external code cannot change the top-level element's internal HTML structure directly through the top-level element. Only the component API can change the top-level element's internal HTML structure.
-
-Think of the internal structure as a closed shadow DOM. Only component-level APIs can change internal structure.
+Allowing read operations is a compromise. It would be great to have completely encapsulated components, but wrapping the DOM API for read operations is very verbose and ultimately not that helpful. However, mutations do require explicit permission from a component.
 
 #### Any component can read state from anywhere.
 
@@ -35,7 +41,7 @@ For this reason, the document object is always available for read-only operation
 
 #### Notifications of state updates flow downwards from the owning component.
 
-Child components can read or update state owned higher up, but the notification of the state change should flow downwards to each interested component in a top-down manner.
+Child components can read or update state-owned higher up, but the notification of the state change should flow downwards to each interested component in a top-down manner.
 
 This ensures that parents react to changes before children.
 
@@ -45,21 +51,31 @@ More on the service pattern later.
 
 ### API
 
-#### A component is an object.
+#### A component is an object created from a JavaScript class.
 
 #### Hang the component's top-level `HTMLElement` element from the `$` property of the component object.
 
 #### Components only take a single object parameter on initialization called props.
 
-This technique makes it easy to pass around classes, initialization objects (props), and use mixins.
+This technique makes it easy to pass around classes and initialization objects (props), and use mixins.
 
-Any properties on the props object not used by the component API are sent to the underlying view element's properties, attributes, or methods. This is convenient.
+#### Components can be extended. The extended component can perform any mutations that the superclass could.
+
+#### Each component is a CHESS component as well.
+
+Extended classes are a new composite CHESS component.
+
+#### There is a one-to-one mapping between JavaScript classes and CHESS classes.
+
+In other words, if you want a composite, then you need a new JavaScript class and vice-versa.
+
+#### child/children pattern - When passing a component to a parent component, use "child" and "children"
 
 ## Service Pattern
 
 ### Overview
 
-#### A single component may delegate to a "service" the management of an aspect of state owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
+#### A single component may delegate to a "service" the management of an aspect of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
 
 Delegation can simply be intent. There is no need to explicitly pass the owning component to the service.
 
