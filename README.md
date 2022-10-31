@@ -27,6 +27,10 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 "State" is any data used or displayed by the application.
 
+#### Components that own state are the only component that can mutate the state.
+
+They can expose methods that can be called by other components that affect the state, but external code cannot change the state otherwise.
+
 #### A component has a view that is parented by a single top-level HTMLElement.
 
 Think of HTML/CSS as the language to describe the view.
