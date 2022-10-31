@@ -35,6 +35,10 @@ Think of HTML/CSS as the language to describe the view.
 
 Allowing read operations is a compromise. It would be great to have completely encapsulated components, but wrapping the DOM API for read operations is very verbose and ultimately not that helpful. However, mutations do require explicit permission from a component.
 
+Adding event listeners are not considered mutations. Nor is adding or removing a component from the document considered a mutation.
+
+All components in an event bubble are considered owners when it reaches them, and they can cancel or stop it.
+
 #### Any component can read state from anywhere.
 
 For this reason, the document object is always available for read-only operations.
@@ -58,6 +62,10 @@ More on the service pattern later.
 #### Components only take a single object parameter on initialization called props.
 
 This technique makes it easy to pass around classes and initialization objects (props), and use mixins.
+
+#### A nice pattern to add event listeners on initialization is to have a `on` prop that accepts an object with keys for the event name and handlers for the value.
+
+Also, listeners could always be explicitly defined as a prop.
 
 #### Components can be extended. The extended component can perform any mutations that the superclass could.
 
