@@ -13,7 +13,7 @@ clear, logical, and convincing
 
 ### Background
 
-One of the primary reasons web app development is challenging is how HTML and CSS are global and not encapsulated. HTML anywhere in the document can be accessed from any code, anywhere. CSS classes can be applied to any content on the page with confusing specificity rules.
+One of the primary reasons web app development is challenging is because HTML and CSS are global and not encapsulated. HTML anywhere in the document can be accessed from any code, anywhere. CSS classes can be applied to any content on the page with confusing specificity rules.
 
 I believe that the popularity of React is due to the bundling of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
 
@@ -41,7 +41,7 @@ Allowing read operations is a compromise. It would be great to have completely e
 
 Adding event listeners are not considered mutations. Nor is adding or removing a component from the document considered a mutation.
 
-All components in an event bubble are considered owners when it reaches them, and they can cancel or stop it.
+All components in an event bubble are considered owners when it reaches them, and they can cancel or stop the event.
 
 #### Any component can read state from anywhere.
 
@@ -87,7 +87,7 @@ In other words, if you want a composite, then you need a new JavaScript class an
 
 ### Overview
 
-#### A single component may delegate to a "service" the management of an aspect of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
+#### A single component may delegate to a "service" the management of an aspect(s) of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
 
 Delegation can simply be intent. There is no need to explicitly pass the owning component to the service.
 
@@ -115,6 +115,6 @@ Shadow DOM also precludes parents from changing styling in child fragments, alth
 
 #### Another great idea with a fatal flaw.
 
-No children or attributes may be set in the constructor, like a normal `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient.
+No children or attributes may be set in the constructor, which is consistent with the behavior of `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient.
 
 Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements create pressure to reflect properties to attributes.
