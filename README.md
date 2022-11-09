@@ -15,7 +15,7 @@ clear, logical, and convincing
 
 One of the primary reasons web app development is challenging is because HTML and CSS are global and not encapsulated. HTML anywhere in the document can be accessed from any code, anywhere. CSS classes can be applied to any content on the page with confusing specificity rules.
 
-I believe that the popularity of React is due to the bundling of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
+I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
 
 Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript, while also providing a state management pattern. Cogent is a pattern and a set of conventions, not a code-based framework.
 
