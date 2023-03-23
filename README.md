@@ -61,7 +61,7 @@ More on the service pattern later.
 
 #### A component is an object created from a JavaScript class.
 
-#### Hang the component's top-level `HTMLElement` element from the `$` property of the component object.
+#### Hang the component's top-level `HTMLElement` element from the `dom` property of the component object.
 
 #### Components only take a single object parameter on initialization called props.
 
