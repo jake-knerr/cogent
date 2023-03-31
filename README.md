@@ -39,7 +39,7 @@ Think of HTML/CSS as the language to describe the view.
 
 Allowing read operations is a compromise. It would be great to have completely encapsulated components, but wrapping the DOM API for read operations is very verbose and ultimately not that helpful. However, mutations do require explicit permission from a component.
 
-Adding event listeners are not considered mutations. Nor is adding or removing a component from the document considered a mutation.
+Adding event listeners are not considered mutations. Nor is adding or removing a component from the document considered a mutation. Nor is focusing.
 
 All components in an event bubble are considered owners when it reaches them, and they can cancel or stop the event.
 
@@ -87,13 +87,11 @@ In other words, if you want a composite, then you need a new JavaScript class an
 
 ### Overview
 
-#### A single component may delegate to a "service" the management of an aspect(s) of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
+#### A "service" may exclusively manage an aspect(s) of state, and/or expose methods for child components to lift state up and dispatch updates.
 
-Delegation can simply be intent. There is no need to explicitly pass the owning component to the service.
+#### Services can do anything.
 
-#### Services can do anything that the delegator can.
-
-#### Services can be registered and used by any component to update or read state. Notifications of updates must flow downwards through all the notified components from the owning component.
+#### Notifications of updates must flow downwards through all the notified components from the owning component.
 
 Services can automatically send notifications based on a tree structure, which ensures a top-down flow.
 
@@ -109,7 +107,7 @@ Styles must be created either in a `style` tag in each component or a link to a 
 
 A solution is `adopted stylesheets.` However, it does not work in Safari.
 
-Shadow DOM also precludes parents from changing styling in child fragments, although this may be a feature rather than a bug.
+Shadow DOM also precludes parents from changing styling in child components, although this may be a feature rather than a bug.
 
 ### Custom Elements
 
