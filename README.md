@@ -89,6 +89,8 @@ In other words, if you want a composite, then you need a new JavaScript class an
 
 #### A "service" may exclusively manage an aspect(s) of state, and/or expose methods for child components to lift state up and dispatch updates.
 
+Once a service manages a part of state, then all components must use the service to mutate or change that aspect of state.
+
 #### Services can do anything.
 
 #### Notifications of updates must flow downwards through all the notified components from the owning component.
