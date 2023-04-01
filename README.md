@@ -17,7 +17,7 @@ One of the primary reasons web app development is challenging is because HTML an
 
 I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
 
-Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript, while also providing a state management pattern. Cogent is a pattern and a set of conventions, not a code-based framework.
+Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript, while also providing a state management pattern. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use over complexity.
 
 ### Overview
 
@@ -29,23 +29,17 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 #### Components that own state are the only component that can mutate the state.
 
-They can expose methods that can be called by other components that affect the state, but external code cannot change the state otherwise.
+They can expose public methods that can be called by other components that affect the state, but external code cannot change the state otherwise.
 
-#### A component has a view that is parented by a single top-level HTMLElement.
+#### A component is an object that wraps a single HTMLElement that is its view.
 
 Think of HTML/CSS as the language to describe the view.
 
-#### External code can perform reads on the HTML and CSS structure of the component. However, external code cannot directly mutate the HTML or CSS of a component. External code can only mutate a component's HTML and CSS via the component's API.
+#### A component's API is both the API exposed by the Object wrapper and the wrapped HTMLElement (view).
 
-Allowing read operations is a compromise. It would be great to have completely encapsulated components, but wrapping the DOM API for read operations is very verbose and ultimately not that helpful. However, mutations do require explicit permission from a component.
+However, external code cannot use the view's API to read or mutate its child or descendent Nodes.
 
-Adding event listeners are not considered mutations. Nor is adding or removing a component from the document considered a mutation. Nor is focusing.
-
-All components in an event bubble are considered owners when it reaches them, and they can cancel or stop the event.
-
-#### Any component can read state from anywhere.
-
-For this reason, the document object is always available for read-only operations.
+To change the internal structure, the component must expose methods to do so using methods on the object wrapper.
 
 #### Notifications of state updates flow downwards from the owning component.
 
@@ -71,8 +65,6 @@ This technique makes it easy to pass around classes and initialization objects (
 
 Also, listeners could always be explicitly defined as a prop.
 
-#### Components can be extended. The extended component can perform any mutations that the superclass could.
-
 #### Each component is a CHESS component as well.
 
 Extended classes are a new composite CHESS component.
@@ -89,11 +81,11 @@ In other words, if you want a composite, then you need a new JavaScript class an
 
 #### A "service" may exclusively manage an aspect(s) of state, and/or expose methods for child components to lift state up and dispatch updates.
 
-Once a service manages a part of state, then all components must use the service to mutate or change that aspect of state.
+Once a service manages a part of state, then all components must use the service to read or change that aspect of state.
 
 #### Services can do anything.
 
-Services can mutate components.
+Services can directly interact with components via their API.
 
 #### Notifications of updates must flow downwards through all the notified components from the owning component.
 
