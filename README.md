@@ -17,7 +17,7 @@ One of the primary reasons web app development is challenging is because HTML an
 
 I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
 
-Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript, while also providing a state management pattern. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use over complexity.
+Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript, while also providing a state management pattern. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use at the cost of more boilerplate and less "magic".
 
 ### Overview
 
@@ -35,9 +35,9 @@ They can expose public methods that can be called by other components that affec
 
 Think of HTML/CSS as the language to describe the view.
 
-#### A component's API is both the API exposed by the Object wrapper and the wrapped HTMLElement (view).
+#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view).
 
-However, external code cannot use the view's API to read or mutate its child or descendent Nodes.
+#### External code cannot use the view's API to read or mutate a component's child or descendent Nodes.
 
 To change the internal structure, the component must expose methods to do so using methods on the object wrapper.
 
@@ -79,7 +79,7 @@ In other words, if you want a composite, then you need a new JavaScript class an
 
 ### Overview
 
-#### A "service" may exclusively manage an aspect(s) of state, and/or expose methods for child components to lift state up and dispatch updates.
+#### A "service" may exclusively manage an aspect(s) of state, and/or expose methods for child components to change said state and dispatch updates.
 
 Once a service manages a part of state, then all components must use the service to read or change that aspect of state.
 
