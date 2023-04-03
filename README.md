@@ -91,7 +91,11 @@ Services can directly interact with components via their API.
 
 Services can automatically send notifications based on a tree structure, which ensures a top-down flow.
 
-That's it. Don't overthink it.
+#### Services should not accept initialization values.
+
+This way, services can be used globally without configuration changes.
+
+#### That's it. Don't overthink it.
 
 ## Other
 
