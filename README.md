@@ -79,21 +79,17 @@ In other words, if you want a composite, then you need a new JavaScript class an
 
 ### Overview
 
-#### A "service" may exclusively manage an aspect(s) of state, and/or expose methods for child components to change said state and dispatch updates.
+#### A single component may delegate to a "service" the management of an aspect(s) of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
 
-Once a service manages a part of state, then all components must use the service to read or change that aspect of state.
+Delegation can simply be intent. There is no need to explicitly pass the state-owning component to the service.
 
-#### Services can do anything.
+#### Services can do anything that the delegating component can.
 
 Services can directly interact with components via their API.
 
 #### Notifications of updates must flow downwards through all the notified components from the owning component.
 
 Services can automatically send notifications based on a tree structure, which ensures a top-down flow.
-
-#### Services should not accept initialization values.
-
-This way services can be used globally by encapsulated components.
 
 #### That's it. Don't overthink it.
 
