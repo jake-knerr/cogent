@@ -79,7 +79,9 @@ In other words, if you want a composite, then you need a new JavaScript class an
 
 ### Overview
 
-#### A single component may delegate to a "service" the management of an aspect(s) of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
+Services make it easier for lower-level components to lift state back up without creating long chains of callbacks down through component trees.
+
+#### A component may delegate to a "service" the management of an aspect(s) of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
 
 Delegation can simply be intent. There is no need to explicitly pass the state-owning component to the service.
 
@@ -87,7 +89,7 @@ Delegation can simply be intent. There is no need to explicitly pass the state-o
 
 Services can directly interact with components via their API.
 
-#### Notifications of updates must flow downwards through all the notified components from the owning component.
+#### Notifications of updates must flow downwards through all the notified components.
 
 Services can automatically send notifications based on a tree structure, which ensures a top-down flow.
 
