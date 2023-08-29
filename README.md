@@ -23,7 +23,7 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 #### An app is a hierarchy of components.
 
-#### A component "owns" a slice of the application state if it is the first component that needs the state, or is the shared parent of the components that need the state.
+#### A component "owns" a slice of the application state if it is the first component that needs the state, or is the first shared parent of the components that need the state.
 
 "State" is any data used or displayed by the application.
 
@@ -45,7 +45,7 @@ To change the internal structure, the component must expose methods to do so usi
 
 Child components can read or update state-owned higher up, but the notification of the state change should flow downwards to each interested component in a top-down manner.
 
-This ensures that parents react to changes before children.
+This ensures that parents react to changes before their children.
 
 #### Child components can "lift state up" by calling callbacks passed to them or by using the service pattern.
 
@@ -65,25 +65,25 @@ This technique makes it easy to pass around classes and initialization objects (
 
 Also, listeners could always be explicitly defined as a prop.
 
-#### Each component is a CHESS component as well.
+#### Each component is a [CHESS](https://github.com/jake-knerr/chess) component as well.
 
 Extended classes are a new composite CHESS component.
 
-#### There is a one-to-one mapping between JavaScript classes and CHESS classes.
+#### There is a one-to-one mapping between JavaScript component classes and CHESS classes.
 
 In other words, if you want a composite, then you need a new JavaScript class and vice-versa.
 
-#### child/children pattern - When passing a component to a parent component, use "child" and "children"
+#### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
 
 ## Service Pattern
 
 ### Overview
 
-Services make it easier for lower-level components to lift state back up without creating long chains of callbacks down through component trees.
+Services make it easier for lower-level components to lift state back up without creating long chains of callbacks passed down through component trees.
 
-#### A component may delegate to a "service" the management of an aspect(s) of state-owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
+#### A component may delegate to a "service" the management of an aspect(s) of state owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
 
-Delegation can simply be intent. There is no need to explicitly pass the state-owning component to the service.
+Delegation can simply be intent. There is no requirement to explicitly pass the state-owning component to the service.
 
 #### Services can do anything that the delegating component can.
 
@@ -113,4 +113,4 @@ Shadow DOM also precludes parents from changing styling in child components, alt
 
 No children or attributes may be set in the constructor, which is consistent with the behavior of `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient.
 
-Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements create pressure to reflect properties to attributes.
+Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements put pressure on developers to reflect properties to attributes to be compliant with the standard.
