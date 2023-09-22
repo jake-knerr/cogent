@@ -37,7 +37,7 @@ Child elements of the wrapped HTMLElement are not part of the API. They are priv
 
 Child components can read or update state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner.
 
-This ensures that parent components react to changes before their children.
+All reactions to state changes should be done in the parent components before child components. This ensures that parent components react to changes before their children.
 
 #### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application store service.
 
