@@ -23,13 +23,15 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 #### An app is a hierarchy of components.
 
+The top-level component is the application component.
+
 #### A component is an object that wraps a single HTMLElement that is its view.
 
 Think of HTML/CSS as the language to describe the view.
 
-#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements. Child elements of the wrapped HTMLElement are not part of the API. They are private to the component.
+#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements.
 
-To change the internal structure, the component must expose methods to do so using methods on the object wrapper.
+Child elements of the wrapped HTMLElement are not part of the API. They are private to the component. To change the internal structure, the component must expose methods to do so using methods on the object wrapper.
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
@@ -65,7 +67,7 @@ Extended classes are a new composite CHESS component.
 
 ### Overview
 
-The top-level component should be available to all components as a global variable. This is the application component. The application component can provide a useful API to child components. A way to prevent the application component from becoming bloated is to use a service pattern, which is to hang services off of the application component via service classes.
+The application component should be available to all components as a global variable. The application component can provide a useful API to child components. A way to prevent the application component from becoming bloated is to use a service pattern, which is to hang services off of the application component via service classes.
 
 #### A common application service is the store.
 
