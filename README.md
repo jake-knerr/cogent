@@ -17,39 +17,29 @@ One of the primary reasons web app development is challenging is because HTML an
 
 I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
 
-Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript, while also providing a state management pattern. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use at the cost of more boilerplate and less "magic".
+Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use at the cost of more boilerplate and less "magic".
 
 ### Overview
 
 #### An app is a hierarchy of components.
 
-#### A component "owns" a slice of the application state if it is the first component that needs the state, or is the first shared parent of the components that need the state.
-
-"State" is any data used or displayed by the application.
-
-#### Components that own state are the only component that can mutate the state.
-
-They can expose public methods that can be called by other components that affect the state, but external code cannot change the state otherwise.
-
 #### A component is an object that wraps a single HTMLElement that is its view.
 
 Think of HTML/CSS as the language to describe the view.
 
-#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view).
-
-#### External code cannot use the view's API to read or mutate a component's child or descendent Nodes.
+#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements. Child elements of the wrapped HTMLElement are not part of the API. They are private to the component.
 
 To change the internal structure, the component must expose methods to do so using methods on the object wrapper.
 
-#### Notifications of state updates flow downwards from the owning component.
+#### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
-Child components can read or update state-owned higher up, but the notification of the state change should flow downwards to each interested component in a top-down manner.
+Child components can read or update state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner.
 
-This ensures that parents react to changes before their children.
+This ensures that parent components react to changes before their children.
 
-#### Child components can "lift state up" by calling callbacks passed to them or by using the service pattern.
+#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application store service.
 
-More on the service pattern later.
+A store service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner.
 
 ### API
 
@@ -69,31 +59,17 @@ Also, listeners could always be explicitly defined as a prop.
 
 Extended classes are a new composite CHESS component.
 
-#### There is a one-to-one mapping between JavaScript component classes and CHESS classes.
-
-In other words, if you want a composite, then you need a new JavaScript class and vice-versa.
-
 #### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
 
-## Service Pattern
+## Application Service Pattern
 
 ### Overview
 
-Services make it easier for lower-level components to lift state back up without creating long chains of callbacks passed down through component trees.
+The top-level component should be available to all components as a global variable. This is the application component. The application component can provide a useful API to child components. A way to prevent the application component from becoming bloated is to use a service pattern, which is to hang services off of the application component via service classes.
 
-#### A component may delegate to a "service" the management of an aspect(s) of state owned by the initializing component, and/or expose methods for child components to lift state up and dispatch updates.
+#### A common application service is the store.
 
-Delegation can simply be intent. There is no requirement to explicitly pass the state-owning component to the service.
-
-#### Services can do anything that the delegating component can.
-
-Services can directly interact with components via their API.
-
-#### Notifications of updates must flow downwards through all the notified components.
-
-Services can automatically send notifications based on a tree structure, which ensures a top-down flow.
-
-#### That's it. Don't overthink it.
+The store is a service that provides a way to read and update application state. The store can also provide a way to register callbacks to be called when state changes. Callbacks are called in the component hierarchy order.
 
 ## Other
 
