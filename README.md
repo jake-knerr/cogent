@@ -71,7 +71,7 @@ The application component should be available to all components as a global vari
 
 #### A common application service is the store.
 
-The store is a service that provides a way to read and update application state. The store can also provide a way to register callbacks to be called when state changes. Callbacks are called in the component hierarchy order.
+The store is a service that provides a way to read and update application state. The store can also provide a way to register callbacks to be called by components when state changes. Callbacks are called in the component hierarchy order.
 
 ## Other
 
