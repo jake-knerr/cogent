@@ -31,7 +31,7 @@ Think of HTML/CSS as the language to describe the view.
 
 #### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements.
 
-Child elements of the wrapped HTMLElement are not part of the API. They are private to the component. To change the internal structure, the component must expose methods to do so using methods on the object wrapper.
+Child elements of the wrapped HTMLElement are not part of the API. They are private to the component. To change the internal structure, the component, not the view, must expose methods to do so on the object wrapper.
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
@@ -68,6 +68,10 @@ Extended classes are a new composite CHESS component.
 ### Overview
 
 The application component should be available to all components as a global variable. The application component can provide a useful API to child components. A way to prevent the application component from becoming bloated is to use a service pattern, which is to hang services off of the application component via service classes.
+
+#### Service
+
+A service provides functionality available to the components in the application. Services are hung off of the application component, and are interacted with through an API directly or via indirect techniques.
 
 #### A common application service is the store.
 
