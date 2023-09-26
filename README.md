@@ -39,9 +39,9 @@ Child components can read or update state used higher up in the component hierar
 
 All reactions to state changes should be done in the parent components before child components. This ensures that parent components react to changes before their children.
 
-#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application store service.
+#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application state service.
 
-A store service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner.
+A state service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner.
 
 ### API
 
