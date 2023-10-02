@@ -63,6 +63,8 @@ Extended classes are a new composite CHESS component.
 
 #### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
 
+#### Setup default structure and behavior in the constructor. For changes to the HTML structure due to state changes, prefer a private argumentless `render` method.
+
 ## Application Service Pattern
 
 ### Overview
