@@ -45,7 +45,7 @@ A state service could be available to all components and provide a way to read s
 
 ### API
 
-#### A component is an object created from a JavaScript class.
+#### A component is an object created from a JavaScript class that wraps a DOM element.
 
 #### Hang the component's top-level `HTMLElement` element from the `dom` property of the component object.
 
@@ -63,7 +63,7 @@ Extended classes are a new composite CHESS component.
 
 #### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
 
-#### Setup default structure and behavior in the constructor. For changes to the HTML structure due to state changes, prefer a private argumentless `render` method.
+#### Setup default structure and behavior in the constructor.
 
 ## Application Service Pattern
 
