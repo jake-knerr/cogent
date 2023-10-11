@@ -31,7 +31,7 @@ Think of HTML/CSS as the language to describe the view.
 
 #### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements.
 
-Child elements of the wrapped HTMLElement are not part of the API. They are private to the component. To change the internal structure, the component, not the view, must expose methods to do so on the object wrapper.
+HTML elements can only be altered by the component that owns them, which is the closest parent component. To change internal structure, the component, not the view, must expose methods.
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
@@ -49,9 +49,15 @@ A state service could be available to all components and provide a way to read s
 
 #### Hang the component's top-level `HTMLElement` element from the `dom` property of the component object.
 
+```javascript
+class Button {
+  dom = document.createElement("button");
+}
+```
+
 #### Components only take a single object parameter on initialization called props.
 
-This technique makes it easy to pass around classes and initialization objects (props), and use mixins.
+This technique makes it easy to pass around classes and initialization objects (props).
 
 #### A nice pattern to add event listeners on initialization is to have a `on` prop that accepts an object with keys for the event name and handlers for the value.
 
@@ -62,26 +68,6 @@ Also, listeners could always be explicitly defined as a prop.
 Extended classes are a new composite CHESS component.
 
 #### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
-
-#### For components where HTML structure can change, prefer a private, no-arguments `#render` method to be called in the constructor and when state changes to handle dynamic inner structure.
-
-There is no need to be dogmatic. For simple attribute changes, changing the DOM attribute via a setter is fine. However, for more complex changes or child structure changes, a `#render` method is preferred for consistency between different components.
-
-Keep the default structure in the constructor. If the structure is dynamic, use a `#render` method to handle the dynamic structure.
-
-## Application Service Pattern
-
-### Overview
-
-The application component should be available to all components as a global variable. The application component can provide a useful API to child components. A way to prevent the application component from becoming bloated is to use a service pattern, which is to hang services off of the application component via service classes.
-
-#### Service
-
-A service provides functionality available to the components in the application. Services are hung off of the application component, and are interacted with through an API directly or via indirect techniques.
-
-#### A common application service is the store.
-
-The store is a service that provides a way to read and update application state. The store can also provide a way to register callbacks to be called by components when state changes. Callbacks are called in the component hierarchy order.
 
 ## Other
 
@@ -99,6 +85,6 @@ Shadow DOM also precludes parents from changing styling in child components, alt
 
 #### Another great idea with a fatal flaw.
 
-No children or attributes may be set in the constructor, which is consistent with the behavior of `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient.
+No children or attributes may be set in the constructor, which is consistent with the behavior of `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient. Work-arounds are clunky and feel inelegant.
 
 Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements put pressure on developers to reflect properties to attributes to be compliant with the standard.
