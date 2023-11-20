@@ -41,7 +41,7 @@ All reactions to state changes should be done in the parent components before ch
 
 #### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application state service.
 
-A state service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner.
+A state service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner. The store may also be used to hang behavior that is shared by multiple components.
 
 ### API
 
@@ -63,9 +63,7 @@ This technique makes it easy to pass around classes and initialization objects (
 
 Also, listeners could always be explicitly defined as a prop.
 
-#### Each component is a [CHESS](https://github.com/jake-knerr/chess) component as well.
-
-Extended classes are a new composite CHESS component.
+#### Use [CHESS](https://github.com/jake-knerr/chess) components to style Cogent components.
 
 #### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
 
