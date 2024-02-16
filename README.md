@@ -39,15 +39,17 @@ Child components can read or update state used higher up in the component hierar
 
 All reactions to state changes should be done in the parent components before child components. This ensures that parent components react to changes before their children.
 
-#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application state service.
+#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application engine service.
 
-A state service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner. The store may also be used to hang behavior that is shared by multiple components.
+An engine service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner. The engine may also be used to hang behavior that is shared by multiple components.
 
 ### API
 
 #### A component is an object created from a JavaScript class that wraps a DOM element.
 
 #### Hang the component's top-level `HTMLElement` element from the `dom` property of the component object.
+
+Prefer to initialize the DOM towards the top of the constructor.
 
 ```javascript
 class Button {
@@ -65,7 +67,23 @@ Also, listeners could always be explicitly defined as a prop.
 
 #### Use [CHESS](https://github.com/jake-knerr/chess) components to style Cogent components.
 
+### Stylistic Conventions and Design Patterns
+
 #### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
+
+#### Develop based on screen sizes with feature detection instead of user-agent sniffing.
+
+#### Prefer desktop-first design.
+
+It is easier to move content panes into modal screens than vice-versa.
+
+#### Prefer to keep CSS files in the same file as the component.
+
+#### Divide up app into "screens", meaning content regions that can be the only screen displayed based on screen size.
+
+### Engine Service
+
+#### The first component to use a method or property of state should be the component to implement or initialize the property.
 
 ## Other
 
