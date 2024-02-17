@@ -39,9 +39,9 @@ Child components can read or update state used higher up in the component hierar
 
 All reactions to state changes should be done in the parent components before child components. This ensures that parent components react to changes before their children.
 
-#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using an application engine service.
+#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using a global singleton "lift" service.
 
-An engine service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner. The engine may also be used to hang behavior that is shared by multiple components.
+A lift service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner. The service may also be used to hang behavior that is shared by multiple components.
 
 ### API
 
@@ -61,17 +61,13 @@ class Button {
 
 This technique makes it easy to pass around classes and initialization objects (props).
 
-#### A nice pattern to add event listeners on initialization is to have a `on` prop that accepts an object with keys for the event name and handlers for the value.
-
-Also, listeners could always be explicitly defined as a prop.
-
 #### Use [CHESS](https://github.com/jake-knerr/chess) components to style Cogent components.
 
 ### Stylistic Conventions and Design Patterns
 
-#### child/children pattern - When passing a component to a parent component, use "child" and "children" as the prop names.
-
 #### Develop based on screen sizes with feature detection instead of user-agent sniffing.
+
+This technique is ultimately more reliable and future-proof.
 
 #### Prefer desktop-first design.
 
@@ -79,11 +75,17 @@ It is easier to move content panes into modal screens than vice-versa.
 
 #### Prefer to keep CSS files in the same file as the component.
 
+This technique makes it easier to find and modify styles.
+
 #### Divide up app into "screens", meaning content regions that can be the only screen displayed based on screen size.
 
-### Engine Service
+This technique makes it easier to design an application that can accommodate multiple screen sizes and form factors.
 
-#### The first component to use a method or property of state should be the component to implement or initialize the property.
+### Lift Service
+
+A lift service is accessible to all components in the application, and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
+
+#### The first component to use shared method or a slice of state should be the component to implement or initialize the property on the lift service.
 
 ## Other
 
