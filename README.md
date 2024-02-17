@@ -65,6 +65,8 @@ This technique makes it easy to pass around classes and initialization objects (
 
 #### Use [CHESS](https://github.com/jake-knerr/chess) components to style Cogent components.
 
+This makes it easy to style components and makes the components look consistent.
+
 ### Stylistic Conventions and Design Patterns
 
 #### Develop based on screen sizes with feature detection instead of user-agent sniffing.
