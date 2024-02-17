@@ -39,6 +39,10 @@ Child components can read or update state used higher up in the component hierar
 
 All reactions to state changes should be done in the parent components before child components. This ensures that parent components react to changes before their children.
 
+#### For state that is shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
+
+This facilitates updates being sent to all interested components in a top-down manner.
+
 #### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using a global singleton "lift" service.
 
 A lift service could be available to all components and provide a way to read state, update state, and send update notifications in a downward manner. The service may also be used to hang behavior that is shared by multiple components. See below for more information.
