@@ -93,7 +93,9 @@ This technique makes it easier to design an application that can accommodate mul
 
 A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
 
-#### The first component to use a shared method or a slice of state should be the component to implement or initialize the property on the lift service.
+#### The first component to use a shared method or a slice of state on the lift service should be the component to implement or initialize the property on the lift service.
+
+This makes it easy to identify where to initialize the property or method on the lift service. It also makes sure that the properties are initialized in a top-down manner.
 
 ## Other
 
