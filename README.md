@@ -47,6 +47,8 @@ A lift service could be available to all components and provide a way to read st
 
 #### A component is an object created from a JavaScript class that wraps a DOM element.
 
+The component's API is the methods and properties of the object and the methods and properties of the wrapped DOM element.
+
 #### Hang the component's top-level `HTMLElement` element from the `dom` property of the component object.
 
 Prefer to initialize the DOM towards the top of the constructor.
