@@ -41,7 +41,7 @@ All reactions to state changes should be done in the parent components before ch
 
 #### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using a global singleton "lift" service.
 
-A lift service could be available to all components and provide a way to read state, update state, and send update notifications in a downward manner. The service may also be used to hang behavior that is shared by multiple components.
+A lift service could be available to all components and provide a way to read state, update state, and send update notifications in a downward manner. The service may also be used to hang behavior that is shared by multiple components. See below for more information.
 
 ### API
 
