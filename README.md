@@ -31,7 +31,7 @@ Think of HTML/CSS as the language to describe the view.
 
 #### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements.
 
-HTML elements can only be altered by the component that owns them, which is the closest parent component. To change internal structure, the component, not the view, must expose methods.
+HTML elements can only be altered by the component that owns them, which is the closest parent component. To change the internal structure, the component, not the view, must expose methods.
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
@@ -41,7 +41,7 @@ All reactions to state changes should be done in the parent components before ch
 
 #### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using a global singleton "lift" service.
 
-A lift service could be available to all components and provide a way to read state, update state, and send update notifications in a downwards manner. The service may also be used to hang behavior that is shared by multiple components.
+A lift service could be available to all components and provide a way to read state, update state, and send update notifications in a downward manner. The service may also be used to hang behavior that is shared by multiple components.
 
 ### API
 
@@ -77,15 +77,15 @@ It is easier to move content panes into modal screens than vice-versa.
 
 This technique makes it easier to find and modify styles.
 
-#### Divide up app into "screens", meaning content regions that can be the only screen displayed based on screen size.
+#### Divide up the app into "screens", meaning content regions that can be the only screen displayed based on screen size.
 
 This technique makes it easier to design an application that can accommodate multiple screen sizes and form factors.
 
 ### Lift Service
 
-A lift service is accessible to all components in the application, and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
+A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
 
-#### The first component to use shared method or a slice of state should be the component to implement or initialize the property on the lift service.
+#### The first component to use a shared method or a slice of state should be the component to implement or initialize the property on the lift service.
 
 ## Other
 
@@ -103,6 +103,6 @@ Shadow DOM also precludes parents from changing styling in child components, alt
 
 #### Another great idea with a fatal flaw.
 
-No children or attributes may be set in the constructor, which is consistent with the behavior of `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient. Work-arounds are clunky and feel inelegant.
+No children or attributes may be set in the constructor, which is consistent with the behavior of `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient. Workarounds are clunky and feel inelegant.
 
 Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements put pressure on developers to reflect properties to attributes to be compliant with the standard.
