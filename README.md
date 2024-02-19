@@ -25,7 +25,7 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 The top-level component is the application component.
 
-#### An application has an application state ("state") that is represented by all the components that make up the application.
+#### An application has an application state ("state") that is spread throughout all the components that make up the application.
 
 In other words, the application state is the state of the application at any given time. It is the state of all the components that make up the application.
 
