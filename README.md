@@ -38,15 +38,14 @@ Think of HTML/CSS as the language to describe the view.
 HTML elements can only be altered by the component that owns them, which is the closest parent component. To change the internal structure outside of the owning component, the owning component, not the view, must expose mutation methods.
 
 ```javascript
-// bad
+// bad; external code accessing inner HTML structure via the wrapped HTMLElement
 class Button {
   dom = document.createElement("button");
 }
 
-// forbidden; accessing inner HTML structure via wrapped HTMLElement
 new Button().dom.textContent = "Click me";
 
-// good
+// good; using the component's API
 class Button {
   dom = document.createElement("button");
   get text() {
@@ -57,7 +56,6 @@ class Button {
   }
 }
 
-// using the component's API
 new Button().text = "Click me";
 ```
 
