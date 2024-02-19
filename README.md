@@ -35,7 +35,7 @@ Think of HTML/CSS as the language to describe the view.
 
 #### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child nodes.
 
-Inner child nodes can only be altered by the component that manages it, which is the closest parent component. To change the inner child nodes outside of the owning component, the owning component, not the view, must expose mutation methods.
+Inner child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow other code to mutate its inner child nodes by deliberately exposing mutation methods.
 
 ```javascript
 // bad; external code changing inner child nodes via the wrapped HTMLElement
