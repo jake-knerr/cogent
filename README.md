@@ -67,9 +67,7 @@ For state slices that are shared between multiple components, management of the 
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
-Child components can read or update state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner.
-
-All reactions to state changes should be done in the parent components before child components. This ensures that parent components react to changes before their children.
+Child components can read or update state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
 
 #### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using a global singleton "lift" service.
 
