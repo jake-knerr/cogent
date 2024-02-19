@@ -37,7 +37,31 @@ Think of HTML/CSS as the language to describe the view.
 
 HTML elements can only be altered by the component that owns them, which is the closest parent component. To change the internal structure outside of the owning component, the owning component, not the view, must expose mutation methods.
 
-#### The first component to use a slice of state should be the component responsible for initializing and changing this slice of state. This component is the "owner" of the state and is tasked with managing the state.
+```javascript
+// bad
+class Button {
+  dom = document.createElement("button");
+}
+
+// forbidden; accessing inner HTML structure via wrapped HTMLElement
+new Button().dom.textContent = "Click me";
+
+// good
+class Button {
+  dom = document.createElement("button");
+  get text() {
+    return this.dom.textContent;
+  }
+  set text(value) {
+    this.dom.textContent = value;
+  }
+}
+
+// using the component's API
+new Button().text = "Click me";
+```
+
+#### The first component to use a slice of state should be the component responsible for initializing and changing the slice of state. This component is the "owner" of the state and is tasked with managing the state.
 
 For state slices that are shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
 
