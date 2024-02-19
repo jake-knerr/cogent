@@ -69,9 +69,9 @@ For state slices that are shared between multiple components, management of the 
 
 Child components can read or update state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
 
-#### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using a global singleton "lift" service.
+#### Child components can mutate state managed higher up in the component hierachy calling callbacks passed to them by parent components or by using a global singleton "lift" service.
 
-A lift service could be available to all components and provide a way to read state, update state, and send update notifications in a downward manner. The service may also be used to hang behavior that is shared by multiple components. See below for more information.
+This is referred to as "lifting state up". See below for more information on a lift service.
 
 ### API
 
