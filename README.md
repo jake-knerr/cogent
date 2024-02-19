@@ -17,7 +17,7 @@ One of the primary reasons web app development is challenging is because HTML an
 
 I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
 
-Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use, but requires greater skill with the underlying browser APIs.
+Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use but requires greater skill with the underlying browser APIs.
 
 ### Overview
 
@@ -25,19 +25,19 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 The top-level component is the application component.
 
-#### An application is represented by an application state ("state") that can be thought to be represented by all the components that make up the application.
+#### An application has an application state ("state") that is represented by all the components that make up the application.
 
 In other words, the application state is the state of the application at any given time. It is the state of all the components that make up the application.
 
-#### A component is an object that wraps a single HTMLElement that is its view.
+#### A component is an object that wraps a single HTMLElement. The HTMLElement is the component's view.
 
 Think of HTML/CSS as the language to describe the view.
 
-#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements.
+#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements or inner structure.
 
-HTML elements can only be altered by the component that owns them, which is the closest parent component. To change the internal structure, the component, not the view, must expose methods.
+HTML elements can only be altered by the component that owns them, which is the closest parent component. To change the internal structure outside of the owning component, the owning component, not the view, must expose mutation methods.
 
-#### The first component to use a slice of state should be the component responsible for initializing and changing this slice of state.
+#### The first component to use a slice of state should be the component responsible for initializing and changing this slice of state. This component is the "owner" of the state and is tasked with managing the state.
 
 For state slices that are shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
 
@@ -96,10 +96,6 @@ This technique makes it easier to design an application that can accommodate mul
 ### Lift Service
 
 A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
-
-#### The first component to use a shared method or a slice of state on the lift service should be the component to implement or initialize the property on the lift service.
-
-This makes it easy to identify where to initialize the property or method on the lift service. It also makes sure that the properties are initialized in a top-down manner.
 
 ## Other
 
