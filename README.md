@@ -27,7 +27,7 @@ The top-level component is the application component.
 
 #### An application has an application state ("state") that is spread throughout all the components that make up the application.
 
-In other words, the application state is the state of the application at any given time. It is the state of all the components that make up the application.
+In other words, the application state is the state of the application at any given time. It is the sum of all the states of the components that make up the application.
 
 #### A component is an object that wraps a single HTMLElement. The HTMLElement is the component's view.
 
