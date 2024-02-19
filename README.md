@@ -17,13 +17,17 @@ One of the primary reasons web app development is challenging is because HTML an
 
 I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
 
-Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use at the cost of more boilerplate and less "magic".
+Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use, but requires greater skill with the underlying browser APIs.
 
 ### Overview
 
 #### An app is a hierarchy of components.
 
 The top-level component is the application component.
+
+#### An application is represented by an application state ("state") that can be thought to be represented by all the components that make up the application.
+
+In other words, the application state is the state of the application at any given time. It is the state of all the components that make up the application.
 
 #### A component is an object that wraps a single HTMLElement that is its view.
 
@@ -33,15 +37,15 @@ Think of HTML/CSS as the language to describe the view.
 
 HTML elements can only be altered by the component that owns them, which is the closest parent component. To change the internal structure, the component, not the view, must expose methods.
 
+#### The first component to use a slice of state should be the component responsible for initializing and changing this slice of state.
+
+For state slices that are shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
+
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
 Child components can read or update state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner.
 
 All reactions to state changes should be done in the parent components before child components. This ensures that parent components react to changes before their children.
-
-#### For state that is shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
-
-This facilitates updates being sent to all interested components in a top-down manner.
 
 #### Child components can "lift state up" and trigger notifications in parent components by calling callbacks passed to them or by using a global singleton "lift" service.
 
