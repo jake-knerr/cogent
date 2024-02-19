@@ -33,12 +33,12 @@ In other words, the application state is the state of the application at any giv
 
 Think of HTML/CSS as the language to describe the view.
 
-#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child elements or inner structure.
+#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child nodes.
 
-HTML structure can only be altered by the component that manages it, which is the closest parent component. To change the internal structure outside of the owning component, the owning component, not the view, must expose mutation methods.
+Inner child nodes can only be altered by the component that manages it, which is the closest parent component. To change the inner child nodes outside of the owning component, the owning component, not the view, must expose mutation methods.
 
 ```javascript
-// bad; external code changing inner HTML structure via the wrapped HTMLElement
+// bad; external code changing inner child nodes via the wrapped HTMLElement
 class Button {
   dom = document.createElement("button");
 }
