@@ -21,10 +21,6 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 ### Components
 
-#### An app is a hierarchy of components.
-
-The top-level component is the application component.
-
 #### A component is an object that wraps a single HTMLElement. The HTMLElement is the component's view.
 
 Think of HTML/CSS as the language to describe the view.
@@ -50,6 +46,10 @@ new Button().dom.textContent = "Click me";
 // good; using the component's API
 new Button().text = "Click me";
 ```
+
+#### An app is a hierarchy of components.
+
+The top-level component is the application component.
 
 ### State
 
