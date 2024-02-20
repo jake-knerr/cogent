@@ -15,19 +15,15 @@ clear, logical, and convincing
 
 One of the primary reasons web app development is challenging is because HTML and CSS are global and not encapsulated. HTML anywhere in the document can be accessed from any code, anywhere. CSS classes can be applied to any content on the page with confusing specificity rules.
 
-I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript definition as the primary face of a component.
+I believe that the popularity of React is due to the encapsulation of HTML, CSS, and JavaScript code into the concept of a component, with the JavaScript aspect as the primary face of a component.
 
 Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript. Cogent is a pattern and a set of conventions, not a code-based framework. Cogent is simple and prioritizes ease of use but requires greater skill with the underlying browser APIs.
 
-### Overview
+### Components
 
 #### An app is a hierarchy of components.
 
 The top-level component is the application component.
-
-#### An application has an application state ("state") that is spread throughout all the components that make up the application.
-
-In other words, the application state is the state of the application at any given time. It is the sum of all the states of the components that make up the application.
 
 #### A component is an object that wraps a single HTMLElement. The HTMLElement is the component's view.
 
@@ -54,6 +50,12 @@ new Button().dom.textContent = "Click me";
 // good; using the component's API
 new Button().text = "Click me";
 ```
+
+### State
+
+#### An application has an application state that is spread throughout all the components that make up the application.
+
+In other words, the application state is the state of the application at any given time. It is the sum of all the individual component states that make up the application.
 
 #### The first component to use a slice of application state ("state") should be the component responsible for initializing and changing this state. This component is tasked with managing the state.
 
