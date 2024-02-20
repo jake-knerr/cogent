@@ -61,9 +61,9 @@ For state that is shared between multiple components, management of the state sh
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
-Child components can read or update state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
+Child components can read state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
 
-#### Child components can mutate state managed higher up in the component hierachy calling callbacks passed to them by parent components or by using a global singleton "lift" service.
+#### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by parent components or by using a global singleton "lift" service.
 
 This is referred to as "lifting state up". See below for more information on a lift service.
 
