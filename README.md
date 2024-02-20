@@ -63,9 +63,13 @@ For state that is shared between multiple components, management of the state sh
 
 Child components can read state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
 
-#### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by parent components or by using a global singleton "lift" service.
+#### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by the state's managing components or by using a global singleton "lift" service.
 
 This is referred to as "lifting state up". See below for more information on a lift service.
+
+### Lift Service
+
+A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
 
 ### API
 
@@ -108,10 +112,6 @@ This technique makes it easier to find and modify styles.
 #### Divide up the app into "screens", meaning content regions that can be the only screen displayed based on screen size.
 
 This technique makes it easier to design an application that can accommodate multiple screen sizes and form factors.
-
-### Lift Service
-
-A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
 
 ## Other
 
