@@ -71,6 +71,8 @@ These techniques are referred to as "lifting state up". See below for more infor
 
 A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
 
+For example, a lift service could be used by a component to set and update a state property (say theme color) that could be subscribed to and used by other components. The lift service would send notifications to all components when the theme changes. Finally, the component could expose a method on the lift service for downstream components to directly update the state themselves.
+
 ### API
 
 #### A component is an object created from a JavaScript class that wraps a DOM element.
