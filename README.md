@@ -57,7 +57,7 @@ new Button().text = "Click me";
 
 #### The first component to use a slice of application state ("state") should be the component responsible for initializing and changing this state. This component is tasked with managing the state.
 
-For state slices that are shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
+For state that is shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
