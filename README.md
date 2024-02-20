@@ -65,7 +65,7 @@ Child components can read state used higher up in the component hierarchy, but t
 
 #### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by the state's managing components or by using a global singleton "lift" service.
 
-This is referred to as "lifting state up". See below for more information on a lift service.
+These techniques are referred to as "lifting state up". See below for more information on a lift service.
 
 ### Lift Service
 
