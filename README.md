@@ -77,7 +77,7 @@ For example, a lift service could be used by a component to set and update a sta
 
 ### Stylistic Conventions and Design Patterns
 
-#### Hang the component's top-level `HTMLElement` element from the `dom` property of the component object.
+#### Hang the component's wrapped `HTMLElement` element from the `dom` property of the component object.
 
 Prefer to initialize the DOM towards the top of the constructor.
 
