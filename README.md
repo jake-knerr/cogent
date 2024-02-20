@@ -65,7 +65,7 @@ For state that is shared between multiple components, management of the state sh
 
 Child components can read state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
 
-#### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by the state's managing components or by using a global singleton "lift" service.
+#### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by the state's managing component or by using a global singleton "lift" service.
 
 These techniques are referred to as "lifting state up". See below for more information on a lift service.
 
@@ -73,13 +73,9 @@ These techniques are referred to as "lifting state up". See below for more infor
 
 A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
 
-For example, a lift service could be used by a component to set and update a state property (say theme color) that could be subscribed to and used by other components. The lift service would send notifications to all components when the theme changes. Finally, the component could expose a method on the lift service for downstream components to directly update the state themselves.
+For example, a lift service could be used by a component to set and update a state property (say theme color) that could be subscribed to and used by other components. The lift service would send notifications to all components when the theme changes. Finally, the theme-managing component could expose a method on the lift service for downstream components to directly update the theme themselves.
 
-### API
-
-#### A component is an object created from a JavaScript class that wraps a DOM element.
-
-The component's API is the methods and properties of the object and the methods and properties of the wrapped DOM element.
+### Stylistic Conventions and Design Patterns
 
 #### Hang the component's top-level `HTMLElement` element from the `dom` property of the component object.
 
@@ -98,8 +94,6 @@ This technique makes it easy to pass around classes and initialization objects (
 #### Use [CHESS](https://github.com/jake-knerr/chess) components to style Cogent components.
 
 This makes it easy to style components and makes the components look consistent.
-
-### Stylistic Conventions and Design Patterns
 
 #### Develop based on screen sizes with feature detection instead of user-agent sniffing.
 
