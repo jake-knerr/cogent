@@ -38,14 +38,6 @@ Think of HTML/CSS as the language to describe the view.
 Inner child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow external code to mutate its inner child nodes by deliberately exposing mutation methods.
 
 ```javascript
-// bad; external code changing inner child nodes via the wrapped HTMLElement
-class Button {
-  dom = document.createElement("button");
-}
-
-new Button().dom.textContent = "Click me";
-
-// good; using the component's API
 class Button {
   dom = document.createElement("button");
   get text() {
@@ -56,6 +48,10 @@ class Button {
   }
 }
 
+// bad; external code changing inner child nodes via the wrapped HTMLElement
+new Button().dom.textContent = "Click me";
+
+// good; using the component's API
 new Button().text = "Click me";
 ```
 
