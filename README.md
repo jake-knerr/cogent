@@ -60,7 +60,7 @@ For state that is shared between multiple components, management of the state sh
 
 #### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
 
-Child components can read state used higher up in the component hierarchy, but the notification of the state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
+Child components can read state used higher up in the component hierarchy, but the notification of a state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
 
 #### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by the state's managing component or by using a global singleton "lift" service.
 
@@ -104,7 +104,7 @@ It is easier to move content panes into modal screens than vice-versa.
 
 This technique makes it easier to find and modify styles.
 
-#### Divide up the app into "screens", meaning content regions that can be the only screen displayed based on screen size.
+#### Divide up the app into "screens", meaning content regions that can be the only region displayed based on screen size.
 
 This technique makes it easier to design an application that can accommodate multiple screen sizes and form factors.
 
