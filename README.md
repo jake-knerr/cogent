@@ -21,21 +21,18 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 ### Components
 
-#### A component is an object that wraps a single HTMLElement. The HTMLElement is the component's view.
+#### A component is an object that wraps a single HTMLElement. The wrapped HTMLElement is the component's view.
 
 Think of HTML/CSS as the language to describe the view.
 
 #### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child nodes.
 
-Inner child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow external code to mutate its inner child nodes by deliberately exposing mutation methods.
+Child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow external code to mutate its inner child nodes by deliberately exposing mutation methods.
 
 ```javascript
 class Button {
   dom = document.createElement("button");
-  get text() {
-    return this.dom.textContent;
-  }
-  set text(value) {
+  setText(value) {
     this.dom.textContent = value;
   }
 }
@@ -44,7 +41,7 @@ class Button {
 new Button().dom.textContent = "Click me";
 
 // good; using the component's API
-new Button().text = "Click me";
+new Button().setText("Click me");
 ```
 
 #### An app is a hierarchy of components.
