@@ -52,9 +52,9 @@ The top-level component is the application component.
 
 #### An application has an application state that is spread throughout all the components that make up the application.
 
-In other words, the application state is the state of the application at any given time. It is the sum of all the individual component states that make up the application.
+It is the sum of all the individual component states that make up the application at any given time.
 
-#### The first component to use a slice of application state ("state") should be the component responsible for initializing and changing this state. This component is tasked with managing the state.
+#### The first component to use a slice of application state ("state") should be the component responsible for initializing and changing this state. In other words, this component is tasked with managing the state.
 
 For state that is shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
 
@@ -70,7 +70,7 @@ These techniques are referred to as "lifting state up". See below for more infor
 
 A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
 
-For example, a lift service could be used by a component to set and update a state property (say theme color) that could be subscribed to and used by other components. The lift service would send notifications to all components when the theme changes. Finally, the theme-managing component could expose a method on the lift service for downstream components to directly update the theme themselves.
+For example, a lift service could be used by a component to set and update theme color, which could be subscribed to and used by other components. The lift service would send notifications to all components when the theme changes. Finally, the theme-managing component could expose a method on the lift service for downstream components to directly update the theme themselves.
 
 ### Stylistic Conventions and Design Patterns
 
