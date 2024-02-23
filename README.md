@@ -80,17 +80,21 @@ Prefer to initialize the DOM towards the top of the constructor.
 
 ```javascript
 class Button {
-  dom = document.createElement("button");
+  constructor () {
+    dom = document.createElement("button");
+
+    ...
+  }
 }
 ```
 
-#### Components only take a single object parameter on initialization called props.
+#### Components only take a single object parameter on initialization called `props`.
 
 This technique makes it easy to pass around classes and initialization objects (props).
 
 #### Use [CHESS](https://github.com/jake-knerr/chess) components to style Cogent components.
 
-This makes it easy to style components and makes the components look consistent.
+CHESS complements a component-based architecture.
 
 #### Develop based on screen sizes with feature detection instead of user-agent sniffing.
 
