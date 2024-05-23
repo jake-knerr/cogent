@@ -104,7 +104,7 @@ This technique is ultimately more reliable and future-proof.
 
 It is easier to move content panes into modal screens than vice-versa.
 
-#### Prefer to keep CSS files in the same file as the component.
+#### Prefer to keep CSS files in the same folder as the component.
 
 This technique makes it easier to find and modify styles.
 
