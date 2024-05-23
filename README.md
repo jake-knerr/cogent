@@ -37,10 +37,10 @@ class Button {
   }
 }
 
-// bad; external code changing inner child nodes via the wrapped HTMLElement
+// avoid; external code changing inner child nodes via the wrapped HTMLElement
 new Button().dom.textContent = "Click me";
 
-// good; using the component's API
+// good; using the component's api
 new Button().setText("Click me");
 ```
 
