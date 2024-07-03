@@ -25,7 +25,9 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 Think of HTML/CSS as the language to describe the view.
 
-#### A component's API is both the API exposed by the object wrapper and the wrapped HTMLElement (view). External code cannot use the view's API to read or mutate a component's child nodes.
+#### A component's API is the API exposed by the object wrapper, not the wrapped HTMLElement (view).
+
+However, external code can use the view's API for read operations and adding listeners, but mutation can only be accomplished through the object wrapper API.
 
 Child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow external code to mutate its inner child nodes by deliberately exposing mutation methods.
 
@@ -43,6 +45,8 @@ new Button().dom.textContent = "Click me";
 // good; using the component's api
 new Button().setText("Click me");
 ```
+
+#### Although read-operations on the view are allowed, the view's inner child nodes are a black box and should not be accessed in any way unless operations on them are exposed via the component's API.
 
 #### An app is a hierarchy of components.
 
@@ -62,15 +66,9 @@ For state that is shared between multiple components, management of the state sh
 
 Child components can read state used higher up in the component hierarchy, but the notification of a state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
 
-#### Child components can mutate state managed higher up in the component hierarchy by calling callbacks passed to them by the state's managing component or by using a global singleton "lift" service.
+#### The window and document objects are available to all components.
 
-These techniques are referred to as "lifting state up". See below for more information on a lift service.
-
-### Lift Service
-
-A lift service is accessible to all components in the application and can be used by any component to lift state up and make it accessible to other components. Also, the lift service can be used to send notifications to other components in a top-down manner when the state changes. Also, a lift service can be a way for a component to hang behavior that can be used by other components.
-
-For example, a lift service could be used by a component to set and update theme color, which could be subscribed to and used by other components. The lift service would send notifications to all components when the theme changes. Finally, the theme-managing component could expose a method on the lift service for downstream components to directly update the theme themselves.
+Think of these objects are OS-level objects.
 
 ### Stylistic Conventions and Design Patterns
 
@@ -104,7 +102,7 @@ This technique is ultimately more reliable and future-proof.
 
 It is easier to move content panes into modal screens than vice-versa.
 
-#### Prefer to keep CSS files in the same folder as the component.
+#### Prefer to keep CSS files in the same folder as the file that defines the component the CSS files are styling.
 
 This technique makes it easier to find and modify styles.
 
