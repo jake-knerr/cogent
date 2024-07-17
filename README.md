@@ -58,13 +58,13 @@ The top-level component is the application component.
 
 It is the sum of all the individual component states that make up the application at any given time.
 
-#### The first component to use a slice of application state ("state") should be the component responsible for initializing and changing this state. In other words, this component is tasked with managing the state.
+#### A Component's internal state is state that is not shared with other components.
 
-For state that is shared between multiple components, management of the state should be lifted up to the closest common ancestor of the components that need to share the state.
+#### For application state that is shared among different components, any component can mutate said state, but notifications and reactions to the change must flow downwards from parent to child components.
 
-#### When application state changes, notifications and reactions to the change must flow downwards from parent to child components.
+A parent can choose to not react to the change, but it should have the opportunity to do so before any child components if it so desires.
 
-Child components can read state used higher up in the component hierarchy, but the notification of a state change should flow downwards to each interested component in a top-down manner. This ensures that parent components react to changes before their children.
+This ensures that parent components react to changes before their children.
 
 #### The window and document objects are available to all components.
 
