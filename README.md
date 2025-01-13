@@ -9,6 +9,10 @@ clear, logical, and convincing
 
 ---
 
+## To-dos
+
+- Consider creating a component that automatically ties into stateManager and detaches from it when destroy() is called.
+
 ## Components
 
 ### Background
@@ -68,7 +72,7 @@ A parent can choose to not react to the change, but it should have the opportuni
 
 This ensures that parent components react to changes before their children. Thus, even if a component changes a slice of state, it cannot react to it until it's ancestor nodes have.
 
-> Discussion: Originally, I required that a slice of state be managed by a single component, which would expose methods to change said slice of state. This proved to be very burdensome because it required so many methods and devs are forced to figure out what component manages the aspect of state they are working with. It is much easier to allow state to be changed anywhere, but reactions flow downwards. This way, devs do not need to worry about what component manages each aspect of state and can still manage how the application reacts to changes.
+> Discussion: Originally, I required that a slice of state be managed by a single component, which would expose methods to change said slice of state. This proved to be very burdensome because it required so many methods and devs are forced to figure out what component manages the aspect of state they are working with. It is much easier to allow state to be changed anywhere, but reactions flow downwards. This way, devs do not need to worry about what component interacts with each aspect of state and can still manage how the application reacts to changes.
 
 #### The window and document objects are available to all components.
 
