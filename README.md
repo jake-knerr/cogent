@@ -25,11 +25,17 @@ Cogent also aims to componentize a web app by unifying HTML, CSS, and JavaScript
 
 Think of HTML/CSS as the language to describe the view.
 
+#### An app is a hierarchy of components.
+
+The top-level component is the application component.
+
 #### A component's API is the API exposed by the object wrapper, not the wrapped HTMLElement (view).
 
 However, external code can use the view's API for read operations and adding listeners, but mutation can only be accomplished through the object wrapper API.
 
 Child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow external code to mutate its inner child nodes by deliberately exposing mutation methods.
+
+> Discussion: It would be preferable for a component to deliberately expose all public methods and properties instead of exposing the wrapped HTMLElement's API. However, wrapping methods and properties of the underlying HTMLElement creates a lot of boilerplate without any benefit. This is undesirable. Cogent uses a compromise to allow read operations on the top-level node, but mutation requires deliberate intent by the component. This compromise cuts down on boilerplate and since mutation requires the component's API, encapsulation is preserved.
 
 ```javascript
 class Button {
@@ -48,10 +54,6 @@ new Button().setText("Click me");
 
 #### Although read-operations on the view are allowed, the view's inner child nodes are a black box and should not be accessed in any way unless operations on them are exposed via the component's API.
 
-#### An app is a hierarchy of components.
-
-The top-level component is the application component.
-
 ### State
 
 #### An application has an application state that is spread throughout all the components that make up the application.
@@ -64,7 +66,9 @@ It is the sum of all the individual component states that make up the applicatio
 
 A parent can choose to not react to the change, but it should have the opportunity to do so before any child components if it so desires.
 
-This ensures that parent components react to changes before their children.
+This ensures that parent components react to changes before their children. Thus, even if a component changes a slice of state, it cannot react to it until it's ancestor nodes have.
+
+> Discussion: Originally, I required that a slice of state be managed by a single component, which would expose methods to change said slice of state. This proved to be very burdensome because it required so many methods and devs are forced to figure out what component manages the aspect of state they are working with. It is much easier to allow state to be changed anywhere, but reactions flow downwards. This way, devs do not need to worry about what component manages each aspect of state and can still manage how the application reacts to changes.
 
 #### The window and document objects are available to all components.
 
