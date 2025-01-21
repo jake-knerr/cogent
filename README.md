@@ -78,6 +78,10 @@ This ensures that parent components react to changes before their children. Thus
 
 Think of these objects are OS-level objects.
 
+#### Broadly speaking, there are 2 distinct types of states: business data and view-related state. Keep business data and logic in the services and keep all the other state in the components and state managers.
+
+Use a router to communicate view-state related data between different components and to capture a reloadable state.
+
 ### Stylistic Conventions and Design Patterns
 
 #### Hang the component's wrapped `HTMLElement` element from the `dom` property of the component object.
