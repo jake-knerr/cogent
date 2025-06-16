@@ -33,13 +33,11 @@ Think of HTML/CSS as the language to describe the view.
 
 The top-level component is the application component.
 
-#### A component's API is the API exposed by the object wrapper, not the wrapped HTMLElement (view).
-
-However, external code can use the view's API for read operations and adding listeners, but mutation can only be accomplished through the object wrapper API.
+#### A component's API is the API exposed by the object wrapper and all methods of the wrapped HTMLElement (view) that do not mutate inner elements.
 
 Child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow external code to mutate its inner child nodes by deliberately exposing mutation methods.
 
-> Discussion: It would be preferable for a component to deliberately expose all public methods and properties instead of exposing the wrapped HTMLElement's API. However, wrapping methods and properties of the underlying HTMLElement creates a lot of boilerplate without any benefit. This is undesirable. Cogent uses a compromise to allow read operations on the top-level node, but mutation requires deliberate intent by the component. This compromise cuts down on boilerplate and since mutation requires the component's API, encapsulation is preserved.
+> Discussion: For the sake of convenience, all of the wrapped element's API is exposed unless it mutates inner structure. This provides developers with a large toolkit, but confidence that the inner structure is managed by the component only.
 
 ```javascript
 class Button {
@@ -54,6 +52,10 @@ new Button().dom.textContent = "Click me";
 
 // good; using the component's api
 new Button().setText("Click me");
+
+// good; using the wrapped element's API without mutating inner nodes
+
+new Button().dom.focus();
 ```
 
 #### Although read-operations on the view are allowed, the view's inner child nodes are a black box and should not be accessed in any way unless operations on them are exposed via the component's API.
