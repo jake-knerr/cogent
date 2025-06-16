@@ -128,10 +128,6 @@ This technique makes it easier to design an application that can accommodate mul
 
 #### Great concept, with the fatal flaw of styling.
 
-Styles must be created either in a `style` tag in each component or a link to a preloaded stylesheet. Parsing an entire stylesheet for every component must have negative performance implications.
-
-A solution is `adopted stylesheets.` However, it does not work in Safari.
-
 Shadow DOM also precludes parents from changing styling in child components, although this may be a feature rather than a bug.
 
 ### Custom Elements
