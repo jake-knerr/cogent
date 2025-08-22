@@ -92,11 +92,7 @@ Prefer to initialize the DOM towards the top of the constructor.
 
 ```javascript
 class Button {
-  constructor () {
-    dom = document.createElement("button");
-
-    ...
-  }
+  dom = document.createElement("button");
 }
 ```
 
@@ -138,4 +134,4 @@ Shadow DOM also precludes parents from changing styling in child components, alt
 
 No children or attributes may be set in the constructor, which is consistent with the behavior of `document.createElement()`. This would preclude a `props` sent to the constructor, which is convenient. Workarounds are clunky and feel inelegant.
 
-Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements put pressure on developers to reflect properties to attributes to be compliant with the standard.
+Also, custom elements require tracking when the component mounts or when properties change, etc. Render becomes indeterminate. Also, custom elements put pressure on developers to reflect properties to attributes to be compliant with the standard, which is often a waste of time.
