@@ -79,7 +79,7 @@ export class Application extends Component {
 
     super(document.documentElement);
 
-    fe(document.documentElement, { addClass: "::application::" });
+    fe(document.documentElement, { addClass: ":::application:::" });
 
     fe(
       document.body,

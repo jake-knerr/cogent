@@ -119,7 +119,7 @@ export class Tooltip extends Popup {
     arrowRectSize = ARROW_RECT_SIZE,
   } = {}) {
     super(
-      fe("div.::tooltip::", {
+      fe("div.:::tooltip:::", {
         role: "tooltip",
         on: { pointerenter: onPointerEnter, pointerleave: onPointerLeave },
       }),
@@ -138,7 +138,7 @@ export class Tooltip extends Popup {
         (this.#primaryDOM = fe("div")),
         (this.#secondaryDOM = fe("div")),
       ),
-      (this.#arrowDOM = fe("div.::arrow__tooltip::")),
+      (this.#arrowDOM = fe("div.:::arrow__tooltip:::")),
     );
 
     // the size lives here rather than in the stylesheet, because the arithmetic

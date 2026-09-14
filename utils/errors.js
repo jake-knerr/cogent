@@ -40,8 +40,18 @@ export class ServerError extends Error {
     Error.captureStackTrace?.(this, new.target);
   }
 
-  // message and stack are non-enumerable, so a plain stringify would emit only
-  // statusCode and crash and drop the error itself
+  /**
+   * Message and stack are non-enumerable, so a plain stringify would emit only
+   * statusCode and crash and drop the error itself.
+   *
+   * @returns {{
+   *  crash: boolean,
+   *  message: string,
+   *  name: string,
+   *  stack: string|undefined,
+   *  statusCode: number
+   * }}
+   */
   toJSON() {
     return {
       name: this.name,

@@ -189,7 +189,7 @@ export class Modal extends Popup {
     ...props
   } = {}) {
     super(
-      fe("div.::modal::", {
+      fe("div.:::modal:::", {
         ariaModal: "true",
         role,
 

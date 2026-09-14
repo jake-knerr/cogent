@@ -13,9 +13,9 @@
   --contrast-90: color-mix(in oklab, var(--contrast) 90%, var(--theme));
   --contrast-100: color-mix(in oklab, var(--contrast) 100%, var(--theme));
 
-  --bg: var(--theme);
-  --color: var(--contrast);
+  --background: var(--theme);
   --border-color: var(--contrast);
+  --color: var(--contrast);
 
   * {
     box-sizing: border-box;
@@ -41,7 +41,7 @@
 
   -webkit-text-size-adjust: none; /* iOS */
 
-  background: var(--bg);
+  background: var(--background);
   color: var(--color);
   padding: 0;
   text-size-adjust: none;
@@ -69,7 +69,6 @@
   }
 
   &.__light {
-    --accent: orange;
     --theme: #fff;
 
     color-scheme: light;

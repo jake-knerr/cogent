@@ -112,7 +112,7 @@ toast, a dialog -- extends `Popup`, so that mounting and unmounting go through
 the application's popup layer instead of the document.
 
 Name the root with the scoped marker in the spec string, E.G.
-`fe("div.::red-button::")`, which the stylesheet then targets as plain
+`fe("div.:::red-button:::")`, which the stylesheet then targets as plain
 `.red-button`. Keep a component's css in components/styles and import it at the
 top of the component file.
 
