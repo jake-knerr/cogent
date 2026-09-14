@@ -55,10 +55,12 @@ const COGENT_SOURCES = ["components", "host", "managers"].map((dir) =>
  * Scopes css class names that opt in by being written as `:::name:::`, in js and
  * in templates alike.
  *
- * In production each marked name is replaced by a short generated one, in the
- * stylesheets and in every reference at once. In development the colons are
- * simply stripped and the original survives, which keeps devtools readable and
- * avoids rollup's watch-mode output map going stale.
+ * Renaming is a flag rather than a mode. With it on, each marked name is
+ * replaced by a short generated one, in the stylesheets and in every reference
+ * at once; with it off the colons are simply stripped and the original
+ * survives, which keeps devtools readable and avoids rollup's watch-mode output
+ * map going stale. It follows NODE_ENV only because that is the common case --
+ * a production build that would rather ship legible class names says so.
  *
  * Nothing css-related is imported here: postcss asks this plugin for names
  * through `getScopedNameHandler` rather than this plugin reaching for postcss.
@@ -66,6 +68,9 @@ const COGENT_SOURCES = ["components", "host", "managers"].map((dir) =>
  * postcss is the heavy half, and it stays the caller's.
  *
  * @param {Object} [arg]
+ * @param {boolean} [arg.minify=isProduction] renames the marked classes. Off,
+ *  the markers are still stripped -- a build that skips this plugin ships
+ *  `:::name:::` to the dom, which is not the same thing at all
  * @param {string[]} [arg.sources] Directories scanned up front for
  *  `:::marked:::` names and for class selectors already written by hand, which
  *  the generator must then avoid. A marked name living outside all of them is
@@ -75,6 +80,10 @@ const COGENT_SOURCES = ["components", "host", "managers"].map((dir) =>
  *  its components carry markers and an app has no reason to know where its
  *  copy of cogent landed. A directory that does not exist is dropped rather
  *  than walked.
+ *
+ *  Cogent's own classes are renamed like any other but never warned about,
+ *  since an app cannot answer for a rule cogent did not write. Name one of
+ *  those directories here and it counts as the app's again.
  * @param {(rewrite: (str: string) => string) => any} [arg.onClassMapReady]
  *  Run once the map is built and before any module is transformed, for anything
  *  else that needs to rewrite marked names -- static templates, say. Handed the
@@ -82,6 +91,7 @@ const COGENT_SOURCES = ["components", "host", "managers"].map((dir) =>
  * @returns {ScopedClassPlugin}
  */
 export function createScopedClassRewritePlugin({
+  minify = isProduction,
   sources = [],
   onClassMapReady,
 } = {}) {
@@ -97,18 +107,22 @@ export function createScopedClassRewritePlugin({
   /** @type {Set<string>} marked names that no source under `sources` declared */
   const unmappedClasses = new Set();
 
+  /** @type {Set<string>} marked names only cogent's own source declares */
+  const vendorClasses = new Set();
+
   const tracker = [0];
 
-  // cogent's own directories join the caller's, deduped by resolved path so
-  // naming one of them explicitly costs nothing, and existence-checked so a
-  // renamed or absent directory is dropped rather than walked
-  const scanned = [
-    ...new Set(
-      [...sources, ...COGENT_SOURCES]
-        .map((dir) => path.resolve(dir))
-        .filter((dir) => existsSync(dir)),
-    ),
-  ];
+  // existence-checked so a renamed or absent directory is dropped rather than
+  // walked, and deduped so naming a directory twice costs nothing
+  const appDirs = [...new Set(sources.map((dir) => path.resolve(dir)))].filter(
+    (dir) => existsSync(dir),
+  );
+
+  // cogent's own join them, minus any the caller already named -- which is how
+  // cogent's build of itself keeps its classes on the app side of the line
+  const cogentDirs = COGENT_SOURCES.filter(
+    (dir) => existsSync(dir) && !appDirs.includes(dir),
+  );
 
   return {
     name: "scoped-class-rewrite",
@@ -126,10 +140,11 @@ export function createScopedClassRewritePlugin({
       foundClasses.clear();
       reservedNames.clear();
       unmappedClasses.clear();
+      vendorClasses.clear();
       tracker.length = 1;
       tracker[0] = 0;
 
-      if (isProduction && !sources.length)
+      if (minify && !sources.length)
         console.warn(
           "Scoped classes: no `sources` given, so only cogent's own classes can be minified.",
         );
@@ -187,15 +202,18 @@ export function createScopedClassRewritePlugin({
     },
 
     writeBundle() {
-      if (!isProduction) return;
+      if (!minify) return;
 
       for (const original of unmappedClasses)
         console.warn(
           `Marked CSS class found outside \`sources\`, so it was left unminified => :::${original}:::`,
         );
 
+      // cogent's own classes are renamed like any other but never reported: a
+      // consumer cannot answer for a rule cogent did not write, and a cogent
+      // component their app does not import would warn on every build
       for (const [original, minified] of classMap)
-        if (!foundClasses.has(original))
+        if (!foundClasses.has(original) && !vendorClasses.has(original))
           console.warn(
             `Minified CSS class not found in stylesheets => original → :::${original}::: minified → ${minified}`,
           );
@@ -211,22 +229,11 @@ export function createScopedClassRewritePlugin({
   // later got a generated one, and the rule silently stopped matching. Sorting
   // the names also keeps the output stable from build to build.
   async function buildClassMap() {
-    if (!isProduction) return;
+    if (!minify) return;
 
-    /** @type {string[]} */
-    const files = [];
-
-    for (const dir of scanned)
-      forEachFile(dir, (file) => {
-        // a scanned directory's own dependencies are not its source, and
-        // cogent's carries one of its own once installed
-        if (path.relative(dir, file).split(path.sep).includes("node_modules"))
-          return;
-
-        const ext = path.extname(file);
-
-        if (ext === ".css" || MARKED_SOURCE.has(ext)) files.push(file);
-      });
+    const appFiles = collectSourceFiles(appDirs);
+    const vendorFiles = new Set(collectSourceFiles(cogentDirs));
+    const files = [...appFiles, ...vendorFiles];
 
     // read at once rather than one after another. Every source tree is walked
     // before a single module is loaded, so this is latency nothing else is
@@ -237,6 +244,8 @@ export function createScopedClassRewritePlugin({
     );
 
     const marked = new Set();
+    const markedByApp = new Set();
+    const markedByCogent = new Set();
 
     for (const [index, file] of files.entries()) {
       const source = contents[index];
@@ -245,9 +254,22 @@ export function createScopedClassRewritePlugin({
         for (const [, name] of source.matchAll(CSS_CLASS))
           reservedNames.add(name);
       } else {
-        for (const [, name] of source.matchAll(MARKED_CLASS)) marked.add(name);
+        for (const [, name] of source.matchAll(MARKED_CLASS)) {
+          marked.add(name);
+
+          if (vendorFiles.has(file)) {
+            markedByCogent.add(name);
+          } else {
+            markedByApp.add(name);
+          }
+        }
       }
     }
+
+    // resolved after the walk rather than during it, so which side was scanned
+    // first cannot decide the answer. A name both declare is the app's
+    for (const name of markedByCogent)
+      if (!markedByApp.has(name)) vendorClasses.add(name);
 
     for (const name of [...marked].sort())
       classMap.set(name, generateNextName());
@@ -309,12 +331,36 @@ export function createScopedClassRewritePlugin({
       // name, so whichever half asked first would win and the rule would stop
       // matching. Unmapped means unchanged on both sides instead -- unminified,
       // and warned about once the bundle is written
-      if (isProduction && !classMap.has(original))
-        unmappedClasses.add(original);
+      if (minify && !classMap.has(original)) unmappedClasses.add(original);
 
       magic.overwrite(start, end, classMap.get(original) ?? original);
     }
 
     return magic;
   }
+}
+
+/**
+ * Every file under `dirs` worth reading, with anything inside a nested
+ * node_modules skipped: a directory's own dependencies are not its source, and
+ * cogent's carries one of its own once installed.
+ *
+ * @param {string[]} dirs
+ * @returns {string[]}
+ */
+function collectSourceFiles(dirs) {
+  /** @type {string[]} */
+  const files = [];
+
+  for (const dir of dirs)
+    forEachFile(dir, (file) => {
+      if (path.relative(dir, file).split(path.sep).includes("node_modules"))
+        return;
+
+      const ext = path.extname(file);
+
+      if (ext === ".css" || MARKED_SOURCE.has(ext)) files.push(file);
+    });
+
+  return files;
 }

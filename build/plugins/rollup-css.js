@@ -12,14 +12,15 @@ import { isProduction } from "../../utils/system.js";
  * hash: it called emitFile({fileName}), which bypasses rollup's assetFileNames
  * entirely.
  *
- * Minifying is lightningcss's, imported rather than handed in: it is the
- * minifier cogent builds against, it parses the stylesheet instead of running
- * regexes over it, and it answers synchronously -- so there is no async
- * minifier contract left for a caller to get wrong.
+ * Minifying and class scoping are both lightningcss's, imported rather than
+ * handed in: it is what cogent builds against, it parses the stylesheet
+ * instead of running regexes over it, and it answers synchronously -- so there
+ * is no async minifier contract left for a caller to get wrong.
  *
- * Scoping is still the caller's. That one needs postcss, a far larger thing to
- * force on a build that does not want it, so it arrives as `transform` and this
- * file never learns what is being done per stylesheet.
+ * Scoping needed postcss until it did not. `scopeClassName` takes the name
+ * handler off the scoped-class plugin and nothing else, so the two halves of
+ * the rename still meet in the config rather than through an import, and a
+ * build that wants the rename no longer installs postcss to get it.
  *
  * No sourcemap option. This concatenates N stylesheets into one file, so a
  * useful map would have to merge a map per input through that join. If it is
@@ -29,9 +30,14 @@ import { isProduction } from "../../utils/system.js";
  * @param {string} arg.extract name of the stylesheet to emit, e.g. "app.css".
  *  Passed to rollup as a name rather than a fileName, so assetFileNames still
  *  applies and the output can carry a content hash
+ * @param {(className: string) => string} [arg.scopeClassName] renames every
+ *  class in every selector, `:is()` and friends included. Pass
+ *  `scopedClasses.getScopedNameHandler()`; a name it does not know comes back
+ *  unchanged, which is how an unmarked class keeps its own
  * @param {(code: string, id: string) => string|Promise<string>} [arg.transform]
- *  runs over each stylesheet as it is collected -- where a caller hooks in
- *  class scoping, autoprefixing, or anything else per file
+ *  runs over each stylesheet as it is collected, for whatever lightningcss
+ *  does not do -- rarely anything, now that scoping, prefixing and syntax
+ *  lowering are all above
  * @param {boolean} [arg.minify=isProduction] minifies the concatenated result.
  *  Off outside production, where a readable stylesheet is worth more than a
  *  small one
@@ -44,6 +50,7 @@ export function createCssPlugin({
   extract,
   transform: transformCSS,
   minify = isProduction,
+  scopeClassName,
   targets,
 }) {
   /** @type {Map<string, string>} module id -> collected css */
@@ -114,7 +121,10 @@ export function createCssPlugin({
       this.emitFile({
         type: "asset",
         name: extract,
-        source: minify ? minifyCSS(merged, extract, targets) : merged,
+        source:
+          minify || scopeClassName
+            ? compileCSS(merged, extract, { minify, scopeClassName, targets })
+            : merged,
       });
     },
   };
@@ -155,22 +165,62 @@ function getImportOrder(id, getModuleInfo, seen = new Set()) {
 }
 
 /**
- * Minified by parsing rather than by pattern: empty rules go, colors and
- * shorthands collapse, and duplicates merge. Synchronous, so the emit above
- * stays a plain expression.
+ * One parse for all of it: renaming, minifying and whatever `targets` asks to
+ * be lowered. Synchronous, so the emit above stays a plain expression.
  *
  * @param {string} code
  * @param {string} filename Carried only so a parse error can name a file.
- * @param {import("lightningcss").Targets} [targets]
+ * @param {Object} arg
+ * @param {boolean} [arg.minify]
+ * @param {(className: string) => string} [arg.scopeClassName]
+ * @param {import("lightningcss").Targets} [arg.targets]
  * @returns {string}
  */
-function minifyCSS(code, filename, targets) {
-  const { code: minified } = lightningcss.transform({
+function compileCSS(code, filename, { minify, scopeClassName, targets }) {
+  const { code: compiled } = lightningcss.transform({
     filename,
     code: Buffer.from(code),
-    minify: true,
+    minify,
     targets,
+    visitor: scopeClassName
+      ? { Selector: (selector) => scopeSelector(selector, scopeClassName) }
+      : undefined,
   });
 
-  return Buffer.from(minified).toString("utf8");
+  return Buffer.from(compiled).toString("utf8");
+}
+
+/**
+ * Recursive because the visitor is not: it is handed a selector and never the
+ * selector lists inside one, so `:is(.a, .b)` would keep both names while the
+ * `.a` beside it was renamed -- a rule that matches half of what it used to.
+ *
+ * @param {import("lightningcss").Selector} selector
+ * @param {(className: string) => string} scopeClassName
+ * @returns {import("lightningcss").Selector}
+ */
+function scopeSelector(selector, scopeClassName) {
+  return selector.map((part) => {
+    if (part.type === "class")
+      return { ...part, name: scopeClassName(part.name) };
+
+    if (!("selectors" in part) || !part.selectors) return part;
+
+    const { selectors } = part;
+
+    // `:is()` and the rest hold a list of selectors; `:host()` holds one. The
+    // cast is for the spread, which widens the `kind` of whichever pseudo-class
+    // this is back to the union of all of them
+    return /** @type {import("lightningcss").SelectorComponent} */ ({
+      ...part,
+      selectors: Array.isArray(selectors[0])
+        ? /** @type {import("lightningcss").SelectorList} */ (selectors).map(
+            (inner) => scopeSelector(inner, scopeClassName),
+          )
+        : scopeSelector(
+            /** @type {import("lightningcss").Selector} */ (selectors),
+            scopeClassName,
+          ),
+    });
+  });
 }
