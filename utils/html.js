@@ -3,6 +3,7 @@
 
 /**
  * @param {string} html
+ * @returns {string}
  */
 export function escapeHTML(html) {
   return html

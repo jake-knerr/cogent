@@ -10,6 +10,7 @@ const alphaNumericLen = alphaNumericArr.length;
 /**
  * @param {Object} optArg
  * @param {number} [optArg.len=12] The length of the returned `string`.
+ * @returns {string}
  */
 export function getAlphaID({ len = 12 } = {}) {
   const res = [];
@@ -27,6 +28,7 @@ export function getAlphaID({ len = 12 } = {}) {
  * @param {Object} optArg
  * @param {number} [optArg.len=12] The length of the returned `string`.
  * @param {boolean} [optArg.startAlpha=true] Start with a letter.
+ * @returns {string}
  */
 export function getID({ len = 12, startAlpha = true } = {}) {
   const res = [];

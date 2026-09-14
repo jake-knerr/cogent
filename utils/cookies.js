@@ -1,6 +1,6 @@
 /**
  * @param {string} name
- * @returns {string}
+ * @returns {string|undefined} undefined when no cookie of that name is set
  */
 export function getCookieValue(name) {
   return document.cookie

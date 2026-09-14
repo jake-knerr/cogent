@@ -2,6 +2,7 @@ import { createHash, randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 
 /**
  * @param {string} sessionID
+ * @returns {string} hex sha256, or "" for an empty id
  */
 export function hashSessionID(sessionID) {
   if (!sessionID) return "";
@@ -11,6 +12,9 @@ export function hashSessionID(sessionID) {
 
 /**
  * @param {string} password
+ * @returns {Promise<{passwordHash: string, salt: string}>} the hash carries the
+ *  algorithm, its params and the salt, so a later change to any of them can
+ *  still verify what this one wrote
  */
 export async function hashPassword(password) {
   const salt = randomBytes(16).toString("base64url");
@@ -33,6 +37,7 @@ export async function hashPassword(password) {
  * @param {string} password
  * @param {string} storedHash
  * @param {string} salt
+ * @returns {Promise<boolean>}
  */
 export async function verifyPassword(password, storedHash, salt) {
   if (!password || !storedHash) return false;

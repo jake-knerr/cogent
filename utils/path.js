@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
  * Recreates __dirname from commonjs for ES modules.
  *
  * @param {string} url
+ * @returns {string}
  */
 export function getDirPath(url) {
   return path.dirname(fileURLToPath(url));

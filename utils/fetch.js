@@ -150,6 +150,8 @@ const BODYLESS_METHODS = new Set(["GET", "HEAD"]);
  * @param {(report: RequestErrorReport) => void} [handlers.onRequestError] A request that produced no usable response.
  * @param {(report: ResponseErrorReport) => void} [handlers.onResponseError] A response that arrived carrying a non-2xx status.
  * @param {(report: ResponseReport) => void} [handlers.onResponse] All 2xx responses.
+ * @returns the `fetchJSON` below, bound to these handlers. Left untyped so the
+ *  call keeps its own `T` -- naming a signature here would erase it.
  */
 export function createFetchJSON({
   onRequestError,
