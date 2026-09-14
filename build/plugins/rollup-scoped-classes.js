@@ -204,6 +204,20 @@ export function createScopedClassRewritePlugin({
     writeBundle() {
       if (!minify) return;
 
+      // Nothing asked for a single name all build, so every stylesheet kept
+      // the original while the js took the generated one -- the two halves
+      // were never wired to each other. Said once and on its own, because the
+      // per-class warnings below would be a list of every class in the app,
+      // and because an app that marks nothing itself would get no warning at
+      // all: cogent's own are excluded from those, and they are all it has
+      if (classMap.size && !foundClasses.size) {
+        console.warn(
+          "Scoped classes: no stylesheet asked for a renamed class, so none of them match. Pass `scopeClassName: <this plugin>.getScopedNameHandler()` to the css plugin.",
+        );
+
+        return;
+      }
+
       for (const original of unmappedClasses)
         console.warn(
           `Marked CSS class found outside \`sources\`, so it was left unminified => :::${original}:::`,
