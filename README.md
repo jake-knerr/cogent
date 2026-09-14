@@ -48,10 +48,6 @@ Three things cogent needs from whatever project embeds it. None can be enforced,
 
 Think of HTML/CSS as the language to describe the view.
 
-#### An app is a hierarchy of components.
-
-The top-level component is the `Application` component. Extend `Application` to create an app.
-
 #### A component's API is the API exposed by the object wrapper.
 
 Child nodes can only be altered by the component that manages them, which is the closest parent component. A component may allow external code to mutate its inner child nodes by deliberately exposing mutation methods.
@@ -93,7 +89,3 @@ This technique makes it easy to pass around classes and initialization objects (
 #### Use [CHESS](https://github.com/jake-knerr/chess) components to style Cogent components.
 
 CHESS complements a component-based architecture.
-
-#### Develop based on screen sizes with feature detection instead of user-agent sniffing.
-
-This technique is ultimately more reliable and future-proof.
