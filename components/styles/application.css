@@ -1,0 +1,85 @@
+.application {
+  --accent: orange;
+  --contrast: contrast-color(var(--theme));
+
+  --contrast-10: color-mix(in oklab, var(--contrast) 10%, var(--theme));
+  --contrast-20: color-mix(in oklab, var(--contrast) 20%, var(--theme));
+  --contrast-30: color-mix(in oklab, var(--contrast) 30%, var(--theme));
+  --contrast-40: color-mix(in oklab, var(--contrast) 40%, var(--theme));
+  --contrast-50: color-mix(in oklab, var(--contrast) 50%, var(--theme));
+  --contrast-60: color-mix(in oklab, var(--contrast) 60%, var(--theme));
+  --contrast-70: color-mix(in oklab, var(--contrast) 70%, var(--theme));
+  --contrast-80: color-mix(in oklab, var(--contrast) 80%, var(--theme));
+  --contrast-90: color-mix(in oklab, var(--contrast) 90%, var(--theme));
+  --contrast-100: color-mix(in oklab, var(--contrast) 100%, var(--theme));
+
+  --bg: var(--theme);
+  --color: var(--contrast);
+  --border-color: var(--contrast);
+
+  * {
+    box-sizing: border-box;
+    font: inherit;
+    margin: 0;
+    overflow-wrap: break-word;
+
+    && {
+      &:where([disabled]),
+      &:where(:disabled),
+      &:where([inert]) {
+        cursor: default;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      &:where(:focus-visible) {
+        outline: 2px solid var(--accent);
+        outline-offset: 0;
+      }
+    }
+  }
+
+  -webkit-text-size-adjust: none; /* iOS */
+
+  background: var(--bg);
+  color: var(--color);
+  padding: 0;
+  text-size-adjust: none;
+  touch-action: manipulation;
+
+  body {
+    /* the static layer, which every panel is drawn into */
+    > div:nth-child(1) {
+      height: 100%;
+      overflow: clip;
+
+      /* make sure popups appear above content by creating a stacking context */
+      position: relative;
+      z-index: 1;
+    }
+
+    /* the popup layer */
+    > div:nth-child(2) {
+      left: 0;
+      position: absolute;
+      overflow: clip;
+      top: 0;
+      z-index: 2;
+    }
+  }
+
+  &.__light {
+    --accent: orange;
+    --theme: #fff;
+
+    color-scheme: light;
+  }
+
+  &.__dark {
+    --theme: #000;
+
+    -moz-osx-font-smoothing: grayscale; /* mac only */
+    -webkit-font-smoothing: antialiased;
+    color-scheme: dark;
+  }
+}

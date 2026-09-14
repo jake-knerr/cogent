@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+  <!-- Add to the public folder to run -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Component sort benchmark</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+        max-width: 60rem;
+        font:
+          14px/1.55 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+      }
+      h1 {
+        font-size: 1.1rem;
+        margin: 0 0 0.25rem;
+      }
+      p.note {
+        opacity: 0.7;
+        margin: 0 0 1.5rem;
+      }
+      fieldset {
+        border: 1px solid currentColor;
+        border-radius: 4px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+      }
+      label {
+        margin-right: 1rem;
+      }
+      input {
+        width: 5rem;
+        font: inherit;
+      }
+      button {
+        font: inherit;
+        padding: 0.3rem 0.9rem;
+        cursor: pointer;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 1.75rem;
+      }
+      caption {
+        text-align: left;
+        font-weight: bold;
+        padding: 0.5rem 0;
+      }
+      th,
+      td {
+        text-align: right;
+        padding: 0.3rem 0.6rem;
+        border-bottom: 1px solid rgb(128 128 128 / 0.3);
+      }
+      th:first-child,
+      td:first-child {
+        text-align: left;
+      }
+      .win {
+        font-weight: bold;
+      }
+      .verdict {
+        padding: 0.75rem 1rem;
+        border-left: 3px solid currentColor;
+        margin-bottom: 1.5rem;
+      }
+      #stage {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Component sort: contains + comparePosition vs comparePosition alone</h1>
+    <p class="note">
+      Measures the two <code>ComponentDispatcher#sort</code> comparators against
+      a synthetic tree shaped like the dashboard. Nothing here touches the app.
+    </p>
+
+    <fieldset>
+      <label
+        >components
+        <input id="components" type="number" value="100" min="2" max="2000"
+      /></label>
+      <label
+        >tree elements
+        <input id="elements" type="number" value="3000" min="10" max="50000"
+      /></label>
+      <button id="run">Run</button>
+    </fieldset>
+
+    <div id="out"></div>
+    <div id="stage"></div>
+
+    <script>
+      const stage = document.getElementById("stage");
+      const out = document.getElementById("out");
+
+      // a tree with components scattered through ordinary elements, the way a
+      // dashboard nests panels inside panels
+      function buildTree(componentCount, elementCount) {
+        stage.textContent = "";
+
+        const root = document.createElement("div");
+        stage.appendChild(root);
+
+        const all = [root];
+        const components = [];
+
+        for (let i = 1; i < elementCount; i++) {
+          const parent = all[(Math.random() * all.length) | 0];
+          const el = document.createElement("div");
+
+          parent.appendChild(el);
+          all.push(el);
+        }
+
+        // spread the component roots across the whole tree, not just the top
+        const stride = Math.max(1, Math.floor(all.length / componentCount));
+
+        for (
+          let i = 0;
+          i < all.length && components.length < componentCount;
+          i += stride
+        )
+          components.push(all[i]);
+
+        return { components, total: all.length };
+      }
+
+      const P = Node.DOCUMENT_POSITION_PRECEDING;
+      const F = Node.DOCUMENT_POSITION_FOLLOWING;
+
+      // what the dispatcher used to do: two contains, then comparePosition
+      function withContains(a, b) {
+        if (a === b) return 0;
+        if (a.contains(b)) return -1;
+        if (b.contains(a)) return 1;
+
+        const pos = a.compareDocumentPosition(b);
+
+        if (pos & P) return 1;
+        if (pos & F) return -1;
+
+        return 0;
+      }
+
+      // what it does now: containment is already document order in the bitmask
+      function comparePositionOnly(a, b) {
+        if (a === b) return 0;
+
+        const pos = a.compareDocumentPosition(b);
+
+        if (pos & F) return -1;
+        if (pos & P) return 1;
+
+        return 0;
+      }
+
+      function shuffle(list) {
+        const copy = list.slice();
+
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = (Math.random() * (i + 1)) | 0;
+
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+
+        return copy;
+      }
+
+      const MEASURE_MS = 120;
+
+      // yields to the event loop so one measurement is one task, which keeps a
+      // run of them off a single frame
+      const yieldToBrowser = () =>
+        new Promise((resolve) => setTimeout(resolve, 0));
+
+      // enough repetitions to clear the timer's resolution, reported per op
+      function time(fn) {
+        for (let i = 0; i < 50; i++) fn();
+
+        const started = performance.now();
+        let runs = 0;
+
+        while (performance.now() - started < MEASURE_MS) {
+          fn();
+          runs++;
+        }
+
+        return ((performance.now() - started) * 1e6) / runs;
+      }
+
+      // measure, but hand the frame back first so the page stays responsive and
+      // the browser does not report a long task
+      async function timeAsync(label, fn) {
+        out.innerHTML = `<p>measuring ${label}…</p>`;
+
+        await yieldToBrowser();
+
+        return time(fn);
+      }
+
+      function countCalls(components, comparator) {
+        let calls = 0;
+        const wrapped = components.map((node) => ({
+          contains(other) {
+            calls++;
+            return node.contains(other.node ?? other);
+          },
+          compareDocumentPosition(other) {
+            calls++;
+            return node.compareDocumentPosition(other.node ?? other);
+          },
+          node,
+        }));
+
+        shuffle(wrapped).sort((a, b) => comparator(a, b));
+
+        return calls;
+      }
+
+      function table(caption, head, rows) {
+        const escape = (value) =>
+          String(value).replace(
+            /[&<>]/g,
+            (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c],
+          );
+
+        return `<table><caption>${escape(caption)}</caption><thead><tr>${head
+          .map((h) => `<th>${escape(h)}</th>`)
+          .join("")}</tr></thead><tbody>${rows
+          .map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`)
+          .join("")}</tbody></table>`;
+      }
+
+      async function run() {
+        const button = document.getElementById("run");
+
+        button.disabled = true;
+        out.innerHTML = "<p>building the tree…</p>";
+
+        await yieldToBrowser();
+
+        const componentCount = Number(
+          document.getElementById("components").value,
+        );
+        const elementCount = Number(document.getElementById("elements").value);
+        const { components, total } = buildTree(componentCount, elementCount);
+
+        // a pair where one holds the other, and a pair in different branches
+        let nested = null;
+        let unrelated = null;
+
+        for (const a of components) {
+          for (const b of components) {
+            if (a === b) continue;
+            if (!nested && a.contains(b)) nested = [a, b];
+            if (!unrelated && !a.contains(b) && !b.contains(a))
+              unrelated = [a, b];
+            if (nested && unrelated) break;
+          }
+          if (nested && unrelated) break;
+        }
+
+        const micro = [];
+
+        if (nested) {
+          micro.push([
+            "contains, nested pair",
+            (
+              await timeAsync("contains on a nested pair", () =>
+                nested[0].contains(nested[1]),
+              )
+            ).toFixed(1),
+          ]);
+          micro.push([
+            "compareDocumentPosition, nested pair",
+            (
+              await timeAsync("comparePosition on a nested pair", () =>
+                nested[0].compareDocumentPosition(nested[1]),
+              )
+            ).toFixed(1),
+          ]);
+        }
+
+        if (unrelated) {
+          micro.push([
+            "contains, unrelated pair",
+            (
+              await timeAsync("contains on an unrelated pair", () =>
+                unrelated[0].contains(unrelated[1]),
+              )
+            ).toFixed(1),
+          ]);
+          micro.push([
+            "compareDocumentPosition, unrelated pair",
+            (
+              await timeAsync("comparePosition on an unrelated pair", () =>
+                unrelated[0].compareDocumentPosition(unrelated[1]),
+              )
+            ).toFixed(1),
+          ]);
+        }
+
+        // the measurement that actually decides it: a whole sort, each way
+        const shuffled = shuffle(components);
+        const oldNS = await timeAsync(
+          "the old comparator over a full sort",
+          () => shuffled.slice().sort(withContains),
+        );
+        const newNS = await timeAsync(
+          "the new comparator over a full sort",
+          () => shuffled.slice().sort(comparePositionOnly),
+        );
+
+        const oldCalls = countCalls(components, withContains);
+        const newCalls = countCalls(components, comparePositionOnly);
+
+        const faster = newNS < oldNS;
+        const ratio = (Math.max(oldNS, newNS) / Math.min(oldNS, newNS)).toFixed(
+          2,
+        );
+
+        out.innerHTML =
+          `<div class="verdict">${
+            faster
+              ? `<strong>comparePosition alone wins</strong> by ${ratio}× on a ${componentCount}-component sort.`
+              : `<strong>contains + comparePosition wins</strong> by ${ratio}× — the change should be reverted.`
+          }<br />tree: ${total} elements, ${componentCount} components${
+            nested
+              ? ""
+              : " (no nested pair found — raise components or lower elements)"
+          }</div>` +
+          table(
+            `full sort, ${componentCount} components`,
+            ["comparator", "ns per sort", "DOM calls per sort"],
+            [
+              [
+                `contains + comparePosition${faster ? "" : " ✓"}`,
+                oldNS.toFixed(0),
+                oldCalls,
+              ],
+              [
+                `comparePosition only${faster ? " ✓" : ""}`,
+                newNS.toFixed(0),
+                newCalls,
+              ],
+            ].map((row, i) =>
+              i === (faster ? 1 : 0)
+                ? row.map((c) => `<span class="win">${c}</span>`)
+                : row,
+            ),
+          ) +
+          table("single calls", ["operation", "ns per call"], micro);
+
+        button.disabled = false;
+      }
+
+      document.getElementById("run").addEventListener("click", run);
+      run();
+    </script>
+  </body>
+</html>
