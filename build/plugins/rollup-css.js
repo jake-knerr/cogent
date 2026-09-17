@@ -1,6 +1,6 @@
 import * as lightningcss from "lightningcss";
 
-import { isProduction } from "../../utils/system.js";
+import { isProduction } from "cogent/utils/system.js";
 
 /**
  * Collects every imported stylesheet, keeps them in import order, and emits one
@@ -61,9 +61,27 @@ export function createCssPlugin({
 
     // one plugin instance serves every rebuild of a watch, so a stylesheet
     // whose import was deleted would otherwise keep shipping -- and with its id
-    // gone from the import walk it would sort to the very front
+    // gone from the import walk it would sort to the very front.
+    //
+    // safe to clear only because the hook below refills the map on every
+    // rebuild rather than leaving it to whatever `transform` happens to run
     buildStart() {
       styles.clear();
+    },
+
+    // a rebuild replays a cached module instead of transforming it again, so
+    // `transform` below would run for the stylesheet just edited and for no
+    // other -- and the map, cleared above, would hold that one alone. The
+    // bundle then ships a single component's css and drops every other
+    // stylesheet in the graph, which is a watch-only failure: a build with no
+    // cache to replay transforms everything and looks correct
+    //
+    // null rather than false for anything else, because this hook is `first`
+    // and false would answer for every other plugin too
+    shouldTransformCachedModule({ id }) {
+      if (id.endsWith(".css")) return true;
+
+      return null;
     },
 
     async transform(code, id) {
