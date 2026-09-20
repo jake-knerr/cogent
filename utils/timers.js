@@ -17,3 +17,19 @@
 export function delay(duration) {
   return new Promise((resolve) => setTimeout(resolve, duration).unref?.());
 }
+
+/**
+ * Waits out `duration` and resolves, holding the process open until it does.
+ *
+ * The counterpart to cogent's `delay`, whose timer is unrefed so that a pending
+ * wait never keeps a process alive. Use this one wherever what follows the
+ * `await` has to run -- a caller's write, a reply somebody is waiting on --
+ * because an abandoned wait there leaves that work undone and its promise
+ * pending forever.
+ *
+ * @param {number} duration
+ * @returns {Promise<void>}
+ */
+export function delayRefed(duration) {
+  return new Promise((resolve) => setTimeout(resolve, duration));
+}
