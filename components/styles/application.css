@@ -1,36 +1,45 @@
-* {
-  box-sizing: border-box;
-  font-family: inherit;
-  margin: 0;
-  overflow-wrap: break-word;
-}
-
 .application {
-  --accent: orange;
   --contrast: contrast-color(var(--theme));
 
+  --contrast-5: color-mix(in oklab, var(--contrast) 5%, var(--theme));
   --contrast-10: color-mix(in oklab, var(--contrast) 10%, var(--theme));
+  --contrast-15: color-mix(in oklab, var(--contrast) 15%, var(--theme));
   --contrast-20: color-mix(in oklab, var(--contrast) 20%, var(--theme));
+  --contrast-25: color-mix(in oklab, var(--contrast) 25%, var(--theme));
   --contrast-30: color-mix(in oklab, var(--contrast) 30%, var(--theme));
+  --contrast-35: color-mix(in oklab, var(--contrast) 35%, var(--theme));
   --contrast-40: color-mix(in oklab, var(--contrast) 40%, var(--theme));
+  --contrast-45: color-mix(in oklab, var(--contrast) 45%, var(--theme));
   --contrast-50: color-mix(in oklab, var(--contrast) 50%, var(--theme));
+  --contrast-55: color-mix(in oklab, var(--contrast) 55%, var(--theme));
   --contrast-60: color-mix(in oklab, var(--contrast) 60%, var(--theme));
+  --contrast-65: color-mix(in oklab, var(--contrast) 65%, var(--theme));
   --contrast-70: color-mix(in oklab, var(--contrast) 70%, var(--theme));
+  --contrast-75: color-mix(in oklab, var(--contrast) 75%, var(--theme));
   --contrast-80: color-mix(in oklab, var(--contrast) 80%, var(--theme));
+  --contrast-85: color-mix(in oklab, var(--contrast) 85%, var(--theme));
   --contrast-90: color-mix(in oklab, var(--contrast) 90%, var(--theme));
+  --contrast-95: color-mix(in oklab, var(--contrast) 95%, var(--theme));
   --contrast-100: color-mix(in oklab, var(--contrast) 100%, var(--theme));
 
-  --background: var(--theme);
-  --border-color: var(--contrast);
-  --color: var(--contrast);
+  --bg: var(--theme);
+  --text: var(--contrast);
 
   -webkit-text-size-adjust: none; /* iOS */
+  -webkit-tap-highlight-color: transparent;
 
-  background: var(--background);
-  color: var(--color);
+  background: var(--bg);
+  color: var(--text);
   padding: 0;
   text-size-adjust: none;
   touch-action: manipulation;
+
+  * {
+    box-sizing: border-box;
+    font-family: inherit;
+    margin: 0;
+    overflow-wrap: break-word;
+  }
 
   body {
     /* the static layer, which every panel is drawn into */
