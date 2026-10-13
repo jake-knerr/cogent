@@ -1,3 +1,10 @@
+* {
+  box-sizing: border-box;
+  font-family: inherit;
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
 .application {
   --accent: orange;
   --contrast: contrast-color(var(--theme));
@@ -16,28 +23,6 @@
   --background: var(--theme);
   --border-color: var(--contrast);
   --color: var(--contrast);
-
-  * {
-    box-sizing: border-box;
-    font: inherit;
-    margin: 0;
-    overflow-wrap: break-word;
-
-    && {
-      &:where([disabled]),
-      &:where(:disabled),
-      &:where([inert]) {
-        cursor: default;
-        opacity: 0.5;
-        pointer-events: none;
-      }
-
-      &:where(:focus-visible) {
-        outline: 2px solid var(--accent);
-        outline-offset: 0;
-      }
-    }
-  }
 
   -webkit-text-size-adjust: none; /* iOS */
 
@@ -79,6 +64,7 @@
 
     -moz-osx-font-smoothing: grayscale; /* mac only */
     -webkit-font-smoothing: antialiased;
+
     color-scheme: dark;
   }
 }
