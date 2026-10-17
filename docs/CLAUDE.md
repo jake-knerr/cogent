@@ -75,6 +75,15 @@ Inline comments (E.G. // in JavaScript) use lowercase in prose and capitals only
 when it is necessary for clarity, like referring to a class. Other comments
 can use normal punctuation.
 
+Keep comments concise. A comment earns its place by saying something the code
+cannot; skip ones that restate the code.
+
+JSDoc and other documentation-facing comments state the contract: what a
+member does, what it takes and returns, and what a caller must know to use it.
+Keep implementation details out of them -- how it works, why it was built that
+way, and what it guards against belong in short // comments beside the code
+they explain.
+
 Syntax:
 For `if` statements that are coupled with `elseif/else` statements, always
 enclose each block `{}`. E.G. always `if (...) {} else () {}`. Standalone `if`
