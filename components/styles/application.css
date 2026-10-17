@@ -64,6 +64,17 @@
   &.__dark {
     --theme: #000;
 
+    --surface: #181c21;
+    --text: #e7eaee;
+    --muted: #98a1ac;
+    --line: #2a3038;
+    --none: #343a43;
+    --none-ink: #6f7883;
+    --track: #2c323a;
+    --good: #45c893;
+    --warn: #e0a73a;
+    --bad: #f07a66;
+
     -moz-osx-font-smoothing: grayscale; /* mac only */
     -webkit-font-smoothing: antialiased;
 
