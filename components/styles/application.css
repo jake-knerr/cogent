@@ -31,7 +31,7 @@
 
     background: var(--bg);
     color: var(--text);
-    padding: 0;
+    font-size: 1rem;
     text-size-adjust: none;
     touch-action: manipulation;
 
@@ -65,6 +65,8 @@
     &.__dark {
       --theme: #000;
 
+      --bg: #0f1215;
+      --div: #ffffff0d;
       --surface: #181c21;
       --text: #e7eaee;
       --muted: #98a1ac;
@@ -83,6 +85,8 @@
     }
   }
 }
+
+/* https://github.com/ikrishg/reseter.css */
 
 @layer reset {
   *,
