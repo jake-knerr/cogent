@@ -3,9 +3,7 @@
 /* https://github.com/ikrishg/reseter.css */
 
 @layer reset {
-  *,
-  :before,
-  :after {
+  :where(*, :before, :after) {
     box-sizing: border-box;
     font-family: inherit;
     margin: 0;
