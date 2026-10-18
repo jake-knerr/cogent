@@ -62,19 +62,7 @@
   }
 
   &.__dark {
-    --bad: #f07a66;
-    --bg: #0f1215;
-    --div: #ffffff0d;
-    --good: #45c893;
-    --line: #2a3038;
-    --muted: #98a1ac;
-    --none: #343a43;
-    --none-ink: #6f7883;
-    --surface: #181c21;
-    --text: #e7eaee;
     --theme: #000;
-    --track: #2c323a;
-    --warn: #e0a73a;
 
     -moz-osx-font-smoothing: grayscale; /* mac only */
     -webkit-font-smoothing: antialiased;
